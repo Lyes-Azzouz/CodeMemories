@@ -1,0 +1,47 @@
+//Style pour le composant "PanelProfil.jsx"
+.panel_profil_container {
+  display: flex;
+  align-items: center;
+  margin-right: 40px;
+  gap: 60px;
+  .panel_notification {
+    margin-top: 13px;
+    font-size: 2.2em;
+    color: #fff;
+    cursor: pointer;
+  }
+  .panel_profil {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    .image_profil {
+      font-size: 3.7em;
+      margin-top: 20px;
+      color: #fff;
+      .image {
+        box-shadow: 2px 3px 15px 0.1px #000000;
+        border-radius: 50px;
+      }
+    }
+    .profil {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .name_profil {
+        font-size: 1.1em;
+        color: #fff;
+      }
+      .edit_profil {
+        border: none;
+        width: 100px;
+        height: 19px;
+        font-size: 0.7em;
+        background-color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: 0px 10px 25px -4px #000000;
+      }
+    }
+  }
+}

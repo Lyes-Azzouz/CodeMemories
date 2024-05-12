@@ -1,0 +1,23 @@
+//Style pour le composant Logo.jsx
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 30px;
+  width: 237px;
+  height: 55px;
+  cursor: pointer;
+
+  .logo {
+    font-size: 3em;
+    color: #388ec3;
+    margin-top: 15px;
+  }
+  .name {
+    font-size: 1.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #fff;
+    text-wrap: nowrap;
+  }
+}

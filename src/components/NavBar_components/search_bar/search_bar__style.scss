@@ -1,0 +1,19 @@
+// Style pour le composant : "SearchBar.jsx"
+.search_bar-container {
+  display: flex;
+  align-items: center;
+  .search_bar {
+    height: 53px;
+    width: 601px;
+    padding-left: 70px;
+    padding-right: 20px;
+    border-radius: 15px;
+    border: none;
+  }
+  .magnify_glass {
+    position: relative;
+    left: 45px;
+    top: 5px;
+    font-size: 1.7em;
+  }
+}
