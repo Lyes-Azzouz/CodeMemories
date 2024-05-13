@@ -39,13 +39,11 @@ function NavBar() {
 // Affiche la barre latérale gauche de l'application
 function SideBar() {
   // État pour suivre l'onglet actuellement actif
-  const [tabIsActive, setTabIsActive] = useState({});
+  const [tabIsActive, setTabIsActive] = useState("");
   // Fonction pour gérer le clic sur un onglet
   const handleClickTab = (tabName) => {
-    // Vérifie si l'onglet cliqué est déjà actif
-    // Si c'est le cas, désactive l'onglet en mettant activeTab à null
-    // Sinon, active l'onglet en mettant son nom dans activeTab
-    setTabIsActive(tabName === tabIsActive ? null : tabName);
+    // Passe la nom de l'onglet (par exemple : Mes Codes) à la variable d'état "tabIsActive"
+    setTabIsActive(tabName);
   };
 
   return (

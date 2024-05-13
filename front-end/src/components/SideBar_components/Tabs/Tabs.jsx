@@ -4,7 +4,7 @@ import "./tabs_style.scss";
 /**
  * @param {String} textContent // Le texte à afficher en bas de l'icône.
  * @param {ReactIcon} Icon // L'icône de chaque onglet.
- * @param {Boolean} IsActive // Indique si l'onglet est actif ou pas.
+ * @param {Boolean} IsActive // Compare le nom de l'onglet avec la valeur de l'état.
  * @param {Function} onActive // La fonction à appeler lors de l'événement click.
  * @returns {JSX.Element}
  */
