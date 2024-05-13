@@ -1,8 +1,9 @@
 .mes_codes_page__container {
-  background-color: rgb(41, 43, 154);
   position: absolute;
   height: calc(100% - 94px);
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: calc(100% - 122px);
   top: 94px;
   left: 122px;

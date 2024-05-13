@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // Style
 import "../src/App.scss";
 // Components
-import { SideBar } from "./components/SideBar_components/SideBar.jsx";
-import { NavBar } from "./components/NavBar_components/NavBar.jsx";
+import { SideBar } from "./components/Globals_components/SideBar_components/SideBar.jsx";
+import { NavBar } from "./components/Globals_components/NavBar_components/NavBar.jsx";
 // Pages
 import { MesCodes } from "./pages/MesCodes_page/MesCodes.jsx";
 import { MesNotes } from "./pages/MesNotes_page/MesNotes.jsx";
