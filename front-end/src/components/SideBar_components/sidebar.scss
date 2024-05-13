@@ -1,0 +1,26 @@
+// Style pour le composant parent : SideBar
+.side-bar {
+  background-color: #22506c;
+  width: 122px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: calc(100vh - 94px);
+  .line {
+    height: 1px;
+    background-color: #fff;
+    width: 100px;
+    position: relative;
+    top: 60px;
+  }
+}
+
+/**** Media query ****/
+
+// SideBar
+@media screen and (max-width: 1024px) {
+  .side-bar {
+    height: 100vh;
+  }
+}
