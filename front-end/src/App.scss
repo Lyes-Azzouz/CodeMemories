@@ -35,3 +35,19 @@ body {
     top: 60px;
   }
 }
+
+/**** Media query ****/
+
+// SideBar
+@media screen and (max-width: 1024px) {
+  .side-bar {
+    height: 100vh;
+  }
+}
+
+// NavBar
+@media screen and (max-width: 1024px) {
+  .nav-bar {
+    width: 100vw;
+  }
+}

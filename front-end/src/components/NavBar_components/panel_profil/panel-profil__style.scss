@@ -45,3 +45,36 @@
     }
   }
 }
+/*** Media query ***/
+
+@media screen and (max-width: 1024px) {
+  .panel_profil_container {
+    position: relative;
+    right: 10px;
+    bottom: 12px;
+    .panel_notification {
+      margin-top: 30px;
+      position: relative;
+      left: 33px;
+      font-size: 1.5em;
+      color: #fff;
+      cursor: pointer;
+    }
+    .panel_profil {
+      flex-direction: column;
+      gap: 0;
+      .image_profil {
+        font-size: 1.6em;
+      }
+      .profil {
+        .name_profil {
+          display: none;
+        }
+        .edit_profil {
+          height: 17px;
+          width: 55px;
+        }
+      }
+    }
+  }
+}

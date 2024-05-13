@@ -17,3 +17,12 @@
     font-size: 1.7em;
   }
 }
+//** Media query **//
+@media screen and (max-width: 1024px) {
+  .search_bar-container {
+    .search_bar {
+      width: 501px;
+      height: 43px;
+    }
+  }
+}
