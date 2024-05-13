@@ -1,4 +1,4 @@
-import "./login.scss";
+import "./login__style.scss";
 import { CiLogin } from "react-icons/ci";
 
 // Affiche le bouton de connexion à l'application

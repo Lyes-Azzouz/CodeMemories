@@ -1,4 +1,4 @@
-import "./panel_profil_style.scss";
+import "./panel-profil__style.scss";
 import { CgProfile } from "react-icons/cg";
 import { IoMdNotificationsOutline } from "react-icons/io";
 

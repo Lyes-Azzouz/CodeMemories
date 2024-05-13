@@ -38,14 +38,17 @@ function NavBar() {
 // Parent component : SideBar
 // Affiche la barre latérale gauche de l'application
 function SideBar() {
-  // État pour suivre l'onglet actuellement actif
+  /***********Logique pour les composants tabs ************/
+  // Génère un état initial qui à pour valeur un String vide (tabIsActive)
+  // La fonction handleClickTab prends en paramètre une variable(tabname)
+  // Cette variable (tabName) stocke la valeur en string entrée dans le composant =>(onActive={() => handleClickTab("Mes codes")})
+  // La props isActive vérifie si la valeur de l'état est égal à celle du composant
   const [tabIsActive, setTabIsActive] = useState("");
-  // Fonction pour gérer le clic sur un onglet
+
   const handleClickTab = (tabName) => {
-    // Passe la nom de l'onglet (par exemple : Mes Codes) à la variable d'état "tabIsActive"
     setTabIsActive(tabName);
   };
-
+  /********************************************************** */
   return (
     <div className="side-bar">
       <Tabs

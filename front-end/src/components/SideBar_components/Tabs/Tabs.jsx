@@ -1,10 +1,10 @@
-import "./tabs_style.scss";
+import "./tabs__style.scss";
 
 // Onglets de navigation dans la barre latérale
 /**
  * @param {String} textContent // Le texte à afficher en bas de l'icône.
- * @param {ReactIcon} Icon // L'icône de chaque onglet.
- * @param {Boolean} IsActive // Compare le nom de l'onglet avec la valeur de l'état.
+ * @param {ReactIcon} icon // L'icône de chaque onglet.
+ * @param {Boolean} isActive // Si isActive est vrai alors ajoute la class active
  * @param {Function} onActive // La fonction à appeler lors de l'événement click.
  * @returns {JSX.Element}
  */

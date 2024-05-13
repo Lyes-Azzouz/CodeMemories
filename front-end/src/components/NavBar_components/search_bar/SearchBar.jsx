@@ -1,5 +1,5 @@
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
-import "./search_bar__style.scss";
+import "./search-bar__style.scss";
 
 // Affiche la barre de recherche de la navbar qui permet à l'utilisateur de chercher par mot-clé
 export function SearchBar() {
