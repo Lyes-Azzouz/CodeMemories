@@ -2,6 +2,9 @@
 import { useState } from "react";
 //Style
 import "./App.scss";
+// Routeur
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
 // Components
 import { Logo } from "./components/NavBar_components/logo/Logo.jsx";
 import { SearchBar } from "./components/NavBar_components/search_bar/SearchBar.jsx";
@@ -15,6 +18,20 @@ import { GrResources } from "react-icons/gr";
 
 // Application :
 function App() {
+  return (
+    <Router>
+      <div>
+        <Switch>
+          <Route path="/" component={PageHome} />
+        </Switch>
+      </div>
+    </Router>
+  );
+}
+
+// Pages :
+
+function PageHome() {
   return (
     <>
       <NavBar />
@@ -54,7 +71,8 @@ function SideBar() {
       <Tabs
         textContent="Mes codes"
         icon={<IoIosCodeWorking />}
-        isActive={tabIsActive === "Mes codes"}
+        isA
+        ctive={tabIsActive === "Mes codes"}
         onActive={() => handleClickTab("Mes codes")}
       />
       <Tabs
