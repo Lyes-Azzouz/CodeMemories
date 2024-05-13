@@ -38,11 +38,36 @@ function NavBar() {
 // Parent component : SideBar
 // Affiche la barre latérale gauche de l'application
 function SideBar() {
+  // État pour suivre l'onglet actuellement actif
+  const [tabIsActive, setTabIsActive] = useState({});
+  // Fonction pour gérer le clic sur un onglet
+  const handleClickTab = (tabName) => {
+    // Vérifie si l'onglet cliqué est déjà actif
+    // Si c'est le cas, désactive l'onglet en mettant activeTab à null
+    // Sinon, active l'onglet en mettant son nom dans activeTab
+    setTabIsActive(tabName === tabIsActive ? null : tabName);
+  };
+
   return (
     <div className="side-bar">
-      <Tabs textContent="Mes codes" icon={<IoIosCodeWorking />} />
-      <Tabs textContent="Mes notes" icon={<SlNote />} />
-      <Tabs textContent="Ressources" icon={<GrResources />} />
+      <Tabs
+        textContent="Mes codes"
+        icon={<IoIosCodeWorking />}
+        isActive={tabIsActive === "Mes codes"}
+        onActive={() => handleClickTab("Mes codes")}
+      />
+      <Tabs
+        textContent="Mes notes"
+        icon={<SlNote />}
+        isActive={tabIsActive === "Mes notes"}
+        onActive={() => handleClickTab("Mes notes")}
+      />
+      <Tabs
+        textContent="Ressources"
+        icon={<GrResources />}
+        isActive={tabIsActive === "Ressources"}
+        onActive={() => handleClickTab("Ressources")}
+      />
       <div className="line"></div>
       <Login />
     </div>

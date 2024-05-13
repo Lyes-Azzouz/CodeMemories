@@ -1,0 +1,17 @@
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+
+  color: #fff;
+  .login-icon {
+    font-size: 1.7em;
+  }
+  .login-text {
+    font-size: 0.8em;
+  }
+}
+.login-container:hover {
+  color: #ffd600;
+}
