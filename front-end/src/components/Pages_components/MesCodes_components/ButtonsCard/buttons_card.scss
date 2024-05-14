@@ -1,6 +1,6 @@
 .btn-card__container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 10px;
   button {
     border-radius: 10px;
@@ -8,6 +8,7 @@
     padding: 5px 10px;
     font-weight: 600;
     cursor: pointer;
+    font-size: 0.66em;
   }
   #btn-1 {
     background-color: #ffaaaa;

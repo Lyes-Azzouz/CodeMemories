@@ -10,44 +10,97 @@ export function Container() {
   /**OK**/
   const data = [
     {
-      title: "test 1",
-      description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus sint quaerat omnis quisquam! Repudiandae ratione ipsa maiores atque dolorem quae maxime ea quaerat delectus nisi doloribus quas nam eum, recusandae hic? Eaque ad, voluptas nostrum doloremque harum quae minima necessitatibus.",
+      title: "je suis un titre de test",
+      imageUrl:
+        "../../../../public/images/components/mescodes/codecards/css_carousel.gif",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
     },
     {
-      title: "test 2",
-      description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus sint quaerat omnis quisquam! Repudiandae ratione ipsa maiores atque dolorem quae maxime ea quaerat delectus nisi doloribus quas nam eum, recusandae hic? Eaque ad, voluptas nostrum doloremque harum quae minima necessitatibus.",
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/2.png",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
     },
     {
-      title: "test 3",
-      description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus sint quaerat omnis quisquam! Repudiandae ratione ipsa maiores atque dolorem quae maxime ea quaerat delectus nisi doloribus quas nam eum, recusandae hic? Eaque ad, voluptas nostrum doloremque harum quae minima necessitatibus.",
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/3.png",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
     },
     {
-      title: "test 3",
-      description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus sint quaerat omnis quisquam! Repudiandae ratione ipsa maiores atque dolorem quae maxime ea quaerat delectus nisi doloribus quas nam eum, recusandae hic? Eaque ad, voluptas nostrum doloremque harum quae minima necessitatibus.",
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/2.png",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
     },
     {
-      title: "test 3",
-      description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus sint quaerat omnis quisquam! Repudiandae ratione ipsa maiores atque dolorem quae maxime ea quaerat delectus nisi doloribus quas nam eum, recusandae hic? Eaque ad, voluptas nostrum doloremque harum quae minima necessitatibus.",
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/4.png",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
     },
     {
-      title: "test 3",
-      description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus sint quaerat omnis quisquam! Repudiandae ratione ipsa maiores atque dolorem quae maxime ea quaerat delectus nisi doloribus quas nam eum, recusandae hic? Eaque ad, voluptas nostrum doloremque harum quae minima necessitatibus.",
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/2.png",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
     },
     {
-      title: "test 3",
-      description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus sint quaerat omnis quisquam! Repudiandae ratione ipsa maiores atque dolorem quae maxime ea quaerat delectus nisi doloribus quas nam eum, recusandae hic? Eaque ad, voluptas nostrum doloremque harum quae minima necessitatibus.",
+      title: "je suis un titre de test",
+      imageUrl:
+        "../../../../public/images/components/mescodes/codecards/css_carousel.gif",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
     },
     {
-      title: "test 3",
-      description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus sint quaerat omnis quisquam! Repudiandae ratione ipsa maiores atque dolorem quae maxime ea quaerat delectus nisi doloribus quas nam eum, recusandae hic? Eaque ad, voluptas nostrum doloremque harum quae minima necessitatibus.",
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/2.png",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/3.png",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/3.png",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/3.png",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/4.png",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/2.png",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl:
+        "../../../../public/images/components/mescodes/codecards/css_carousel.gif",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/2.png",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
     },
   ];
 

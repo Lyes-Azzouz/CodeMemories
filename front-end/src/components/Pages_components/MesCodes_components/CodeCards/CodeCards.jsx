@@ -14,18 +14,20 @@ export function CodeCards(props) {
       {props.data.map((card, index) => {
         return (
           <div className="card" key={index}>
-            <div className="top-content">
-              <div className="texts">
+            <div className="content">
+              <div className="title_and_image">
                 <h3>{card.title} </h3>
-                <p>{card.description} </p>
+                <img src={card.imageUrl} alt={card.title} />
               </div>
-
+              <div className="technos">
+                <h6>Solution :</h6>
+                {card.technos.map((technos, index) => {
+                  return <p key={index}>{technos} </p>;
+                })}
+              </div>
               <div className="buttons">
                 <ButtonsCard />
               </div>
-            </div>
-            <div className="bottom-content">
-              <p className="code-content">{test} </p>
             </div>
           </div>
         );

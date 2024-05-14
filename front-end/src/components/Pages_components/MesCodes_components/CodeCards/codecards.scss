@@ -8,50 +8,66 @@
   padding-bottom: 50px;
   .card {
     background-color: rgb(255, 255, 255);
-    height: 800px;
+    height: 400px;
     width: 400px;
     padding: 20px;
     box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.1),
       0 0 0 2px rgb(190, 190, 190), 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
     border-radius: 10px;
-    display: flex;
-    flex-direction: column;
     animation: card-wrait 1.5s ease;
-    .top-content {
+    overflow: hidden;
+    .content {
       display: flex;
-      .texts {
+      flex-direction: row;
+      justify-content: space-between;
+      animation: card-content-wrait 3s ease;
+      .title_and_image {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
         h3 {
-          text-wrap: nowrap;
-          font-size: 1.4em;
+          text-wrap: wrap;
+          font-size: 1.3em;
+          position: relative;
+          bottom: 30px;
+          width: 190px;
+          height: 70px;
+        }
+        img {
+          height: 280px;
+          width: 280px;
+          object-fit: cover;
+          border-radius: 20px;
+        }
+      }
+      .technos {
+        text-transform: uppercase;
+        text-align: center;
+        text-wrap: wrap;
+        position: relative;
+        top: 94px;
+        left: 20px;
+
+        h6 {
+          font-size: 0.8em;
+          font-weight: 600;
+          position: relative;
+          top: 10px;
         }
         p {
-          position: relative;
-          top: 50px;
-          text-align: left;
-          font-size: 0.9em;
-          width: 380px;
+          font-size: 0.8em;
+          font-weight: 600;
+          border-radius: 21px;
+          background: #ffffff;
+          box-shadow: 2px 2px 10px #a4a4a4, -9px -9px 7px #ffffff;
+          color: #000000;
+          padding: 5px 10px;
         }
       }
       .buttons {
         position: relative;
-        left: -70px;
-      }
-    }
-    .bottom-content {
-      position: relative;
-      display: flex;
-      justify-content: center;
-
-      height: 50%;
-      top: 110px;
-      .code-content {
-        width: 100%;
-        background-color: #22506c9b;
-        border: none;
-        border-radius: 10px;
-        padding: 20px 30px;
-        overflow: hidden;
-        animation: text-code-wrait 3s linear;
+        top: -4px;
+        right: 180px;
       }
     }
   }
@@ -64,11 +80,11 @@
     overflow: hidden;
   }
   100% {
-    height: 800px;
+    height: 400px;
   }
 }
 
-@keyframes text-code-wrait {
+@keyframes card-content-wrait {
   0% {
     opacity: 0;
   }
