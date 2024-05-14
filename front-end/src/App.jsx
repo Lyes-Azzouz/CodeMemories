@@ -16,6 +16,7 @@ import { useState } from "react";
 function App() {
   const [tabIsActive, setTabIsActive] = useState("");
 
+  // Création des routes (router-dom)
   return (
     <Router>
       <NavBar />

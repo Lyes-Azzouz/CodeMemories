@@ -1,6 +1,7 @@
 // Style
 import "./title.scss";
 
+// Affiche le titre du container "Container.jsx"
 export function Title() {
   return (
     <>
