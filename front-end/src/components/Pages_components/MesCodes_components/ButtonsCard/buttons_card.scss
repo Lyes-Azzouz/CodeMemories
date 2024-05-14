@@ -1,0 +1,24 @@
+.btn-card__container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  button {
+    border-radius: 10px;
+    border: 0;
+    padding: 5px 10px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  #btn-1 {
+    background-color: #ffaaaa;
+    color: #af0808;
+  }
+  #btn-2 {
+    background-color: #fff3b2;
+    color: #ae9407;
+  }
+  #btn-3 {
+    background-color: #c4ffd1;
+    color: #00a324;
+  }
+}
