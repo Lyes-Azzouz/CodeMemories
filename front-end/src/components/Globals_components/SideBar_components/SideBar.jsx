@@ -20,7 +20,7 @@ export function SideBar({ tabIsActive, setTabIsActive }) {
     <div className="side-bar">
       <Link to="Mes_codes" onClick={() => setTabIsActive("Mes codes")}>
         <Tabs
-          textContent="Mes codes"
+          textContent="Collection"
           icon={<IoIosCodeWorking />}
           isActive={tabIsActive === "Mes codes"}
           onActive={() => handleClickTab("Mes codes")}
@@ -29,7 +29,7 @@ export function SideBar({ tabIsActive, setTabIsActive }) {
 
       <Link to="Mes_notes" onClick={() => setTabIsActive("Mes notes")}>
         <Tabs
-          textContent="Mes notes"
+          textContent="Notes"
           icon={<SlNote />}
           isActive={tabIsActive === "Mes notes"}
           onActive={() => handleClickTab("Mes notes")}
