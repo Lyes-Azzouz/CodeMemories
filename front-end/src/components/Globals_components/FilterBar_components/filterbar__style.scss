@@ -5,4 +5,23 @@
   background: #fff;
   box-shadow: -7px 7px 18px #cfcfcf;
   border: 2px solid #cbcbcb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  .icon {
+    font-size: 2em;
+    margin-top: 9px;
+    color: #b8b8b8;
+  }
+  .text {
+    font-size: 1.1em;
+    color: #b8b8b8;
+  }
+  .number-filter {
+    padding: 2px 8px;
+    background-color: #22506c;
+    color: white;
+    border-radius: 50%;
+  }
 }
