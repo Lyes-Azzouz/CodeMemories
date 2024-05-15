@@ -1,7 +1,7 @@
 // Style
 import "./codecards.scss";
 // Components
-import { ButtonsCard } from "../ButtonsCard/ButtonsCard";
+import { ButtonsCard } from "../../../Globals_components/ButtonsCard_components/ButtonsCard";
 
 // Affiche les cards pour chaque sauvegarde de code dans l'application
 // Projette les données de la constante data dans Container.jsx

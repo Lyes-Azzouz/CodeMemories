@@ -50,9 +50,11 @@ export function Modal(props) {
           </label>
           <label className="modal-code">
             Copier/Coller votre code à sauvegarder
-            <input type="placeholder" className="code-ph" />
+            <textarea className="code-aera" />
           </label>
-          <button type="submit">Créer</button>
+          <button className="button-create" type="submit">
+            Créer
+          </button>
         </form>
       </div>
     </div>

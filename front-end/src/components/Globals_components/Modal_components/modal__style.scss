@@ -1,16 +1,19 @@
 .modal-content {
-  height: 680px;
-  width: 440px;
-  background-color: rgba(255, 255, 255, 0.869);
-  border-radius: 30px;
+  height: auto;
+  width: auto;
+  max-width: 1000px;
+  background-color: rgba(255, 255, 255, 0.96);
+  border-radius: 10px;
   box-shadow: 0px 0px 20px 8px #0000002e;
   border: 1px solid rgba(0, 0, 0, 0.203);
-  animation: modal-wrait 1s ease;
+  animation: modal-wrait 0.4s linear;
+
+  padding: 30px;
 
   .close {
     position: relative;
-    top: 10px;
-    left: 10px;
+    top: -22px;
+    left: -20px;
     font-size: 1.6em;
     background-color: #d9d9d9;
     border-radius: 50%;
@@ -25,9 +28,11 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    height: 100%;
+    height: auto;
     align-items: center;
-    animation: modal-content-wrait 2s ease;
+    animation: modal-content-wrait 0.5s linear;
+    text-wrap: nowrap;
+    overflow: hidden;
 
     label {
       display: flex;
@@ -37,25 +42,61 @@
       font-size: 1.2em;
       font-weight: 600;
       input {
-        border-radius: 5px;
-        font-weight: 400;
-        border: 1px solid rgba(0, 0, 0, 0.413);
+        height: 20px;
       }
-      .modal-code .code-ph {
-        height: 300px;
+      .code-aera {
+        background-color: #22506cbd;
+        width: 400px;
+        height: 200px;
+        max-width: 800px;
+        max-height: 800px;
+        color: #fff;
+        border-radius: 10px;
+        border: none;
       }
     }
+    .button-create {
+      margin-top: 10px;
+      background-color: #feb27bdd;
+      color: #894a01;
+      border: none;
+      border-radius: 10px;
+      height: 30px;
+      width: 6dvb;
+    }
   }
+}
+
+// Style pour la scroll bar de la text arera (code-aera)
+
+// Style pour la scroll bar
+.code-aera::-webkit-scrollbar {
+  width: 10px; /* Largeur de la scrollbar */
+}
+
+.code-aera::-webkit-scrollbar-track {
+  background: #ffffff; /* Couleur de la piste */
+  border-radius: 10px;
+}
+
+.code-aera::-webkit-scrollbar-thumb {
+  background: #888; /* Couleur de la barre */
+  border-radius: 10px;
+}
+
+.code-aera::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Couleur de la barre au survol */
 }
 
 // Media query
 
 @keyframes modal-wrait {
   0% {
-    height: 0;
+    width: 0px;
   }
+
   100% {
-    height: 680px;
+    width: 800px;
   }
 }
 
