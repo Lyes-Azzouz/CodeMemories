@@ -10,9 +10,18 @@
   .top-content {
     display: flex;
     justify-content: space-between;
-    .container_filter-bar {
-      margin-right: 348px;
-      margin-top: 30px;
+    align-items: center;
+    padding-right: 350px;
+    animation: top-content-wrait 1.3s ease;
+    .title {
+      margin-left: 32px;
+    }
+
+    .container_filter-bar_btn-new {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      margin-top: 60px;
     }
   }
 }
@@ -34,4 +43,14 @@
 
 .container::-webkit-scrollbar-thumb:hover {
   background: #555; /* Couleur de la barre au survol */
+}
+
+// Animation pour l'apparition de la filter bar et du bouton nouveau ainsi que le titre
+@keyframes top-content-wrait {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

@@ -1,0 +1,18 @@
+.button-new {
+  height: 35px;
+  width: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  background-color: #feb27bc6;
+  border-radius: 8px;
+  color: #894a01;
+  font-weight: 600;
+  cursor: pointer;
+  .plus {
+    padding-top: 1px;
+  }
+}
