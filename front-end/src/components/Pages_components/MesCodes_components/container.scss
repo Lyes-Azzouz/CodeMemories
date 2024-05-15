@@ -17,11 +17,22 @@
       margin-left: 32px;
     }
 
-    .container_filter-bar_btn-new {
+    .container-elements {
       display: flex;
       align-items: center;
       gap: 30px;
       margin-top: 60px;
+      .column-elements {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        .modal-element {
+          position: absolute;
+          top: 180px;
+          right: 670px;
+          z-index: 1;
+        }
+      }
     }
   }
 }

@@ -21,6 +21,9 @@ const firebaseConfig = {
   measurementId: "G-KNVPKVLGSB",
 };
 
+// Modele de données
+const card = require("./models/card");
+
 // Initialisation de Firebase
 const adminApp = initializeApp(firebaseConfig);
 
@@ -30,15 +33,31 @@ app.get("/", (req, res) => {
 });
 
 // Route pour récupérer les données de firebase
-app.get("/api/data", (req, res) => {
-  res.json({ message: "donnée reçu ! wesh" });
+app.get("/api/data", async (req, res) => {
+  try {
+    const db = admin.firestore();
+    const snapshot = await db.collection("item-collection").get();
+    const data = snapshot.docs.map((doc) => doc.data());
+    res.json(data);
+  } catch (error) {
+    console.error("Erreur de récupération des données ", error);
+    res.status(500).json({ error: "Erreur de récupération des données" });
+  }
 });
 
 // Route pour envoyer des données à Firebase
-app.post("/api/data", (req, res) => {
-  res.send("donnée envoyée");
+app.post("/api/data", async (req, res) => {
+  try {
+    const { title, imageUrl, technos } = req.body;
+    const newCard = new card(title, imageUrl, technos);
+    const db = admin.firestore();
+    await db.collection("card").add(newCard);
+    res.status(201).send("Donnée envoyée");
+  } catch (error) {
+    console.error("Erreur lors de l'envoi des données: ", error);
+    res.status(500).json({ error: "Erreur lors de l'envoi des données" });
+  }
 });
-
 // Écoute du serveur sur le port spécifié
 app.listen(port, () => {
   console.log(`Serveur en écoute sur http://localhost:${port}`);

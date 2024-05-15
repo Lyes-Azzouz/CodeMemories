@@ -4,37 +4,122 @@ import "./container.scss";
 import { Title } from "./Title/Title";
 import { CodeCards } from "./CodeCards/CodeCards";
 import { FilterBar } from "../../Globals_components/FilterBar_components/FilterBar";
-import { NewitemButton } from "../../Globals_components/NewItem_button_components/NewItemButton";
+import { NewitemButton } from "./NewItem_button_components/NewItemButton";
 import { Modal } from "../../Globals_components/Modal_components/Modal";
+// Hooks
+import { useState } from "react";
 // Affiche le composant principal de la page Mes codes
 export function Container() {
-  // Simulation de donnée pour tester si ça marche bien
-  /**OK**/
+  // Logique pour la modal
+  const [isOpen, setIsOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [technos, setTechnos] = useState("");
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  const handleSubmit = async () => {
+    console.log(title);
+    console.log(imageUrl);
+    console.log(technos);
+    setTitle("");
+    setImageUrl("");
+    setTechnos("");
+    closeModal();
+  };
+
+  // Donnée fictive de test
+
   const data = [
     {
       title: "je suis un titre de test",
-      imageUrl:
-        "../../../../public/images/components/mescodes/codecards/css_carousel.gif",
-      technos: ["HTML", "CSS", "JAVASCRIPT", "SASS", "NODEJS", "TAILWIND"],
-    },
-    {
-      title: "je suis un titre de test",
-      imageUrl: "../../../../public/images/components/mescodes/codecards/2.png",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
       technos: ["HTML", "CSS", "JAVASCRIPT"],
     },
     {
       title: "je suis un titre de test",
-      imageUrl: "../../../../public/images/components/mescodes/codecards/3.png",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
       technos: ["HTML", "CSS", "JAVASCRIPT"],
     },
     {
       title: "je suis un titre de test",
-      imageUrl: "../../../../public/images/components/mescodes/codecards/2.png",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
       technos: ["HTML", "CSS", "JAVASCRIPT"],
     },
     {
       title: "je suis un titre de test",
-      imageUrl: "../../../../public/images/components/mescodes/codecards/4.png",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
+      technos: ["HTML", "CSS", "JAVASCRIPT"],
+    },
+    {
+      title: "je suis un titre de test",
+      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
       technos: ["HTML", "CSS", "JAVASCRIPT"],
     },
   ];
@@ -46,12 +131,28 @@ export function Container() {
           <Title title="Ma collection de code" />
         </div>
 
-        <div className="container_filter-bar_btn-new">
-          <NewitemButton />
+        <div className="container-elements">
+          <div className="column-elements">
+            <NewitemButton onClick={openModal} />
+            <div className="modal-element">
+              <Modal
+                isOpen={isOpen}
+                onClose={closeModal}
+                title={title}
+                imageUrl={imageUrl}
+                technos={technos}
+                onTitleChange={(e) => setTitle(e.target.value)}
+                onImageUrlChange={(e) => setImageUrl(e.target.value)}
+                onTechnosChange={(e) => setTechnos(e.target.value)}
+                onSubmit={handleSubmit}
+              />
+            </div>
+          </div>
+
           <FilterBar />
         </div>
       </div>
-      <Modal />
+
       <CodeCards data={data} />
     </div>
   );

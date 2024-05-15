@@ -1,6 +1,70 @@
-.modal-container {
-  height: 800px;
-  width: 800px;
-  background-color: black;
-  display: none;
+.modal-content {
+  height: 680px;
+  width: 440px;
+  background-color: rgba(255, 255, 255, 0.869);
+  border-radius: 30px;
+  box-shadow: 0px 0px 20px 8px #0000002e;
+  border: 1px solid rgba(0, 0, 0, 0.203);
+  animation: modal-wrait 1s ease;
+
+  .close {
+    position: relative;
+    top: 10px;
+    left: 10px;
+    font-size: 1.6em;
+    background-color: #d9d9d9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 33px;
+    height: 33px;
+    color: rgb(0, 0, 0);
+  }
+  .modal-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100%;
+    align-items: center;
+    animation: modal-content-wrait 2s ease;
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      font-size: 1.2em;
+      font-weight: 600;
+      input {
+        border-radius: 5px;
+        font-weight: 400;
+        border: 1px solid rgba(0, 0, 0, 0.413);
+      }
+      .modal-code .code-ph {
+        height: 300px;
+      }
+    }
+  }
+}
+
+// Media query
+
+@keyframes modal-wrait {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: 680px;
+  }
+}
+
+@keyframes modal-content-wrait {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
