@@ -5,6 +5,8 @@ import { useState, useRef, useEffect } from "react";
 // React icons
 import { IoCloseSharp } from "react-icons/io5";
 import { GiMove } from "react-icons/gi";
+// Libs
+import { v4 as uuid } from "uuid";
 
 // Création du composant modal
 export function Modal(props) {
@@ -91,7 +93,6 @@ export function Modal(props) {
           <span
             className="deplace"
             onMouseDown={handleMouseDown}
-            style={{ top: `${position.y}px`, left: `${position.x}px` }}
             onClick={(e) => e.stopPropagation()}
             title="Déplacer la fenêtre"
           >

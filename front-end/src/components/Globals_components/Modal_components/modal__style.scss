@@ -8,6 +8,7 @@
     border: 1px solid rgba(0, 0, 0, 0.203);
     animation: modal-content-wrait 0.4s linear;
     padding: 30px;
+    user-select: none;
     .modal-buttons {
       width: 100%;
       display: flex;
