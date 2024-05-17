@@ -24,13 +24,13 @@
         width: 33px;
         height: 33px;
         color: rgb(0, 0, 0);
+        cursor: pointer;
       }
       .deplace {
         background-color: #bcd2fc;
         height: 33px;
         width: 33px;
         font-size: 1.3em;
-
         border-radius: 50%;
         display: flex;
         justify-content: center;
@@ -42,7 +42,7 @@
     .modal-form {
       display: flex;
       flex-direction: column;
-      justify-content: space-around;
+      justify-content: space-between;
       height: auto;
       align-items: center;
       text-wrap: nowrap;
@@ -51,11 +51,12 @@
       label {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        margin-bottom: 20px;
         align-items: center;
-        font-size: 1.2em;
+        font-size: 1em;
         font-weight: 600;
         input {
+          margin-top: 20px;
           height: 20px;
         }
         .code-aera {
@@ -67,6 +68,7 @@
           color: #fff;
           border-radius: 10px;
           border: none;
+          margin-top: 20px;
         }
       }
       .button-create {
@@ -77,6 +79,7 @@
         border-radius: 10px;
         height: 30px;
         width: 6dvb;
+        cursor: pointer;
       }
     }
   }

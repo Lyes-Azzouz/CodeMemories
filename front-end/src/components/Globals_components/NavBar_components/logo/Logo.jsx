@@ -8,7 +8,7 @@ export function Logo() {
       <span className="logo">
         <FaFileCode />
       </span>
-      <span className="name">Code Memories</span>
+      <span className="name">Devs Memories</span>
     </div>
   );
 }
