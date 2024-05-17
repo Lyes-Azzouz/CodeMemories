@@ -8,6 +8,8 @@ import "./tabs__style.scss";
  * @param {Function} onActive // La fonction à appeler lors de l'événement click.
  * @returns {JSX.Element}
  */
+
+// Affiche les onglets de navigation dans la Side Bar
 export function Tabs({ textContent, icon, isActive, onActive }) {
   return (
     <div

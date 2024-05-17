@@ -3,6 +3,7 @@ import "./filterbar__style.scss";
 // React Icons
 import { MdFilterList } from "react-icons/md";
 
+// Mise en place de la barre de filtre
 export function FilterBar() {
   return (
     <div className="filter-bar_container">

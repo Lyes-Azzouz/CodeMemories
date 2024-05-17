@@ -11,6 +11,12 @@ import { Link } from "react-router-dom";
 // Style
 import "./sidebar.scss";
 // Parent component : SideBar
+/**
+ *
+ * @param {String} tabIsActive // Etat initialisé en string vide pour vérifer les Tabs correspondante (Mes codes etc...)
+ * @returns
+ */
+
 export function SideBar({ tabIsActive, setTabIsActive }) {
   const handleClickTab = (tabName) => {
     setTabIsActive(tabName);

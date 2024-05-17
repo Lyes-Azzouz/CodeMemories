@@ -5,6 +5,7 @@ import { RiDeleteBin6Fill } from "react-icons/ri";
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
 import { MdOpenInNew } from "react-icons/md";
 
+// Mise en place des boutons pour chaque cards
 export function ButtonsCard() {
   return (
     <div className="btn-card__container">

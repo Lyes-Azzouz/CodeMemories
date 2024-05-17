@@ -3,6 +3,7 @@ import "./new_item_button__style.scss";
 // React Icon
 import { IoAddOutline } from "react-icons/io5";
 
+// Affiche le bouton d'ajout de nouvelle cards
 export function NewitemButton({ onClick }) {
   return (
     <>

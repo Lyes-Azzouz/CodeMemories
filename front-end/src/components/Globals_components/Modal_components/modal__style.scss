@@ -60,17 +60,48 @@
           margin-top: 20px;
           height: 20px;
         }
-        .code-aera {
-          background-color: #22506cbd;
-          width: 400px;
-          height: 200px;
-          max-width: 800px;
-          max-height: 800px;
-          color: #fff;
-          border-radius: 10px;
-          border: none;
-          margin-top: 20px;
+        .modal-text-area {
+          display: flex;
+          gap: 10px;
+          .code-area {
+            background-color: #22506cbd;
+            width: 400px;
+            height: 100px;
+            max-width: 800px;
+            max-height: 800px;
+            min-height: 30px;
+            color: #fff;
+            border-radius: 10px;
+            border: none;
+            margin-top: 20px;
+          }
+          .btn-remove-text-area {
+            height: 23px;
+            width: 23px;
+            border-radius: 50%;
+            position: relative;
+            top: 24px;
+            right: 38px;
+            padding: 3px 0 0 0;
+            background-color: #ff4f4f9b;
+            color: #ffaaaa;
+            border: 1px solid #fff;
+            cursor: pointer;
+          }
         }
+      }
+      .btn-add-text-area {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        height: 30px;
+        border: none;
+        gap: 5px;
+        background-color: rgba(0, 0, 255, 0.187);
+        padding: 0 10px;
+        cursor: pointer;
+        margin-bottom: 50px;
       }
       .button-create {
         margin-top: 10px;

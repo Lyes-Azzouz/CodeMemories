@@ -14,15 +14,15 @@ export function CodeCards(props) {
             <div className="content">
               <div className="title_and_image">
                 <h3>{card.title} </h3>
-                <img src={card.imageUrl} alt={card.title} />{" "}
+                <img src={card.imageUrl} alt={card.title} />
                 <div className="buttons">
                   <ButtonsCard />
                 </div>
-              </div>{" "}
+              </div>
               <div className="technos">
                 {card.technos.map((technos, index) => {
                   return <p key={index}>{technos} </p>;
-                })}{" "}
+                })}
               </div>
             </div>
           </div>
