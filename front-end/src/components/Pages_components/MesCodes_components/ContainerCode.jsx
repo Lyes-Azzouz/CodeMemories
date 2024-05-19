@@ -15,6 +15,7 @@ export function Container() {
   const [title, setTitle] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [technos, setTechnos] = useState("");
+  const [imageFile, setImageFile] = useState(null);
 
   const openModal = () => {
     setIsOpen(true);
@@ -78,8 +79,11 @@ export function Container() {
                 technos={technos}
                 onTitleChange={(e) => setTitle(e.target.value)}
                 onImageUrlChange={(e) => setImageUrl(e.target.value)}
+                onImageFileChange={(file) => setImageFile(file)}
                 onTechnosChange={(e) => setTechnos(e.target.value)}
                 onSubmit={handleSubmit}
+                showLangageInput={true}
+                showImageInput={true}
               />
             </div>
           </div>

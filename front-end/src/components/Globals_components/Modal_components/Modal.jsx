@@ -20,8 +20,37 @@ export function Modal(props) {
   });
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const modalRef = useRef(null);
+  // Envoie des donnée au serveur
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const handleSubmit = (e) => e.preventDefault();
+    // FormData
+    const formData = new FormData();
+
+    // Ajoute les données du formulaire avec le fichier image téléchargé
+    formData.append("title", props.title);
+    formData.append("technos", JSON.stringify(props.textAreas));
+    formData.append("imageUrl", props.imageFile); // Utilise la prop imageFile
+
+    console.log("Données à envoyer au serveur :", formData);
+
+    try {
+      const response = await fetch("/api/data", {
+        method: "POST",
+        body: formData, // Utilisez formData comme corps de la requête
+      });
+
+      if (response.ok) {
+        console.log("Données envoyées avec succès");
+        onClose();
+        if (specificCallback) specificCallback();
+      } else {
+        console.error("Erreur lors de l'envoi des données");
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'envoi des données:", error);
+    }
+  };
 
   const handleMouseDown = (e) => {
     const modalRect = modalRef.current.getBoundingClientRect();
@@ -80,6 +109,12 @@ export function Modal(props) {
     );
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    props.onImageUrlChange(URL.createObjectURL(file));
+    props.onImageFileChange(file);
+  };
+
   return (
     <div className="modal">
       <div
@@ -115,29 +150,29 @@ export function Modal(props) {
               required
             />
           </label>
-          <label className="modal-image">
-            Image :
-            <input
-              type="text"
-              value={props.imageUrl}
-              onChange={props.onImageUrlChange}
-              required
-            />
-          </label>
-
+          {props.showImageInput && (
+            <label className="modal-image">
+              Image :
+              <input type="file" onChange={props.handleImageChange} required />
+            </label>
+          )}
+          {}
           <label className="modal-code">
             Ajoutez votre code à sauvegarder :
             {textAreas.map((textArea) => (
               <div key={textArea.id} className="modal-text-area">
-                <input
-                  type="text"
-                  className="input-langage"
-                  placeholder="Langage du code (ex : 'javascript')"
-                  value={textArea.language}
-                  onChange={(e) =>
-                    handleLanguageChange(textArea.id, e.target.value)
-                  }
-                />
+                {props.showLangageInput && (
+                  <input
+                    type="text"
+                    className="input-langage"
+                    placeholder="Langage du code (ex : 'javascript')"
+                    value={textArea.language}
+                    onChange={(e) =>
+                      handleLanguageChange(textArea.id, e.target.value)
+                    }
+                  />
+                )}
+
                 <div className="code-area-content">
                   <textarea
                     className="code-area"
