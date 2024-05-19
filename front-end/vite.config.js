@@ -6,5 +6,15 @@ export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     include: ["react-router-dom"],
+
+    css: {
+      modules: {},
+      postcss: {},
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@import "./src/styles/variables.scss";`,
+        },
+      },
+    },
   },
 });
