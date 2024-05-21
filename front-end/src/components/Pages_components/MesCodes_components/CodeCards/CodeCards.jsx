@@ -6,6 +6,7 @@ import { ButtonsCard } from "../../../Globals_components/ButtonsCard_components/
 // Affiche les cards pour chaque sauvegarde de code dans l'application
 // Projette les données de la constante data dans Container.jsx
 export function CodeCards(props) {
+  console.log("Data received:", props.data);
   return (
     <div className="cards_container">
       {props.data.map((card, index) => {
@@ -20,8 +21,8 @@ export function CodeCards(props) {
                 </div>
               </div>
               <div className="technos">
-                {card.technos.map((technos, index) => {
-                  return <p key={index}>{technos} </p>;
+                {card.technos.map((techno, index) => {
+                  return <p key={index}>{techno} </p>;
                 })}
               </div>
             </div>

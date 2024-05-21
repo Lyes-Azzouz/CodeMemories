@@ -1,49 +1,47 @@
-// Importation du style
+// Style
 import "./modal__style.scss";
-// Importation des hooks React
+// Hooks
 import { useState, useRef, useEffect } from "react";
-// Importation des icônes React
+// React Icon
 import { IoCloseSharp, IoAddOutline } from "react-icons/io5";
 import { GiMove } from "react-icons/gi";
-// Importation de la librairie uuid pour générer des identifiants uniques
+// Libs
 import { v4 as uuidv4 } from "uuid";
 
 // Création du composant Modal
 export function Modal(props) {
   const [isDragging, setIsDragging] = useState(false);
-  const [textAreas, setTextAreas] = useState([
-    { id: uuidv4(), value: "", language: "" },
-  ]);
+  const [textAreas, setTextAreas] = useState([{ id: uuidv4(), language: "" }]);
   const [position, setPosition] = useState({
     x: window.innerWidth / 2 - 200,
-    y: window.innerHeight / 2 - 150,
+    y: window.innerHeight / 2 - 220,
   });
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const modalRef = useRef(null);
+  const [selectedImageFile, setSelectedImageFile] = useState(null);
+
   // Envoie des donnée au serveur
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // FormData
     const formData = new FormData();
-
-    // Ajoute les données du formulaire avec le fichier image téléchargé
     formData.append("title", props.title);
-    formData.append("technos", JSON.stringify(props.textAreas));
-    formData.append("imageUrl", props.imageFile); // Utilise la prop imageFile
-
-    console.log("Données à envoyer au serveur :", formData);
+    formData.append(
+      "technos",
+      JSON.stringify(textAreas.map((area) => area.language))
+    );
+    if (selectedImageFile) {
+      formData.append("imageFile", selectedImageFile);
+    }
 
     try {
-      const response = await fetch("/api/data", {
+      const response = await fetch("http://localhost:3000/api/data", {
         method: "POST",
-        body: formData, // Utilisez formData comme corps de la requête
+        body: formData,
       });
 
       if (response.ok) {
         console.log("Données envoyées avec succès");
-        onClose();
-        if (specificCallback) specificCallback();
+        props.onClose();
       } else {
         console.error("Erreur lors de l'envoi des données");
       }
@@ -112,7 +110,7 @@ export function Modal(props) {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     props.onImageUrlChange(URL.createObjectURL(file));
-    props.onImageFileChange(file);
+    setSelectedImageFile(file); // Met à jour selectedImageFile avec le fichier sélectionné
   };
 
   return (
@@ -153,10 +151,9 @@ export function Modal(props) {
           {props.showImageInput && (
             <label className="modal-image">
               Image :
-              <input type="file" onChange={props.handleImageChange} required />
+              <input type="file" onChange={handleImageChange} required />
             </label>
           )}
-          {}
           <label className="modal-code">
             Ajoutez votre code à sauvegarder :
             {textAreas.map((textArea) => (

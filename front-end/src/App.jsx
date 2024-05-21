@@ -9,6 +9,7 @@ import { NavBar } from "./components/Globals_components/NavBar_components/NavBar
 import { MesCodes } from "./pages/MesCodes_page/MesCodes.jsx";
 import { MesNotes } from "./pages/MesNotes_page/MesNotes.jsx";
 import { Ressources } from "./pages/Ressources_page/Ressources.jsx";
+import { CardContentDetail } from "./pages/CardContentDetail_page/CardContentDetail.jsx";
 // Hooks
 import { useState } from "react";
 
@@ -23,6 +24,7 @@ function App() {
       <SideBar tabIsActive={tabIsActive} setTabIsActive={setTabIsActive} />
       <Routes>
         <Route path="/Mes_codes" element={<MesCodes />} />
+        <Route path="/detail" element={<CardContentDetail />} />
         <Route path="/Mes_notes" element={<MesNotes />} />
         <Route path="/Ressources" element={<Ressources />} />
       </Routes>

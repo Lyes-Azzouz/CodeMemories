@@ -4,6 +4,11 @@ import "./buttons_card.scss";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
 import { MdOpenInNew } from "react-icons/md";
+import { useState } from "react";
+
+// const [showCardContent, setShowCardContent] = useState(null);
+
+// const handleClickCodeContent = () => {};
 
 // Mise en place des boutons pour chaque cards
 export function ButtonsCard() {

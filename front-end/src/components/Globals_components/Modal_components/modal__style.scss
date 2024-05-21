@@ -6,7 +6,7 @@
     border-radius: 10px;
     box-shadow: 0 0 20px 8px #0000002e;
     border: 1px solid rgba(0, 0, 0, 0.203);
-    animation: modal-content-wrait 0.4s linear;
+    animation: modal-content-wrait 0.2s linear;
     padding: 30px;
     user-select: none;
 
@@ -67,7 +67,7 @@
           flex-direction: column;
           align-items: center;
           gap: 10px;
-          animation: modal-content-wrait 0.5s ease-in-out;
+          animation: modal-content-wrait 0.3s ease-in-out;
 
           .input-langage {
             background-color: #22506c6d;

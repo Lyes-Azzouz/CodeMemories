@@ -6,10 +6,10 @@ import "./title.scss";
  * @param {String} Title
  * @returns
  */
-export function Title({ title }) {
+export function Title() {
   return (
     <>
-      <h1 className="title">{title}</h1>
+      <h1 className="title">Ma collection</h1>
     </>
   );
 }

@@ -1,98 +1,71 @@
-// Style
 import "./container.scss";
-// Components
 import { Title } from "./Title/Title";
 import { CodeCards } from "./CodeCards/CodeCards";
 import { FilterBar } from "../../Globals_components/FilterBar_components/FilterBar";
 import { NewitemButton } from "./NewItem_button_components/NewItemButton";
 import { Modal } from "../../Globals_components/Modal_components/Modal";
-// Hooks
-import { useState } from "react";
-// Affiche le composant principal de la page Mes codes
+import { useState, useEffect } from "react";
+
 export function Container() {
-  // Logique pour la modal
-  const [isOpen, setIsOpen] = useState(false);
+  const [data, setData] = useState([]);
   const [title, setTitle] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [technos, setTechnos] = useState("");
+  const [technos, setTechnos] = useState([]);
   const [imageFile, setImageFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => {
-    setIsOpen(true);
-  };
+  useEffect(() => {
+    fetch("http://localhost:3000/api/data")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok " + response.statusText);
+        }
+        return response.json();
+      })
+      .then((data) => setData(data))
+      .catch((error) => {
+        console.error("Erreur lors du fetch des données: ", error);
+      });
+  }, []);
 
-  const closeModal = () => {
-    setIsOpen(false);
-  };
-
-  const handleSubmit = async () => {
-    console.log(title);
-    console.log(imageUrl);
-    console.log(technos);
-    setTitle("");
-    setImageUrl("");
-    setTechnos("");
-    closeModal();
-  };
-
-  // Donnée fictive de test
-
-  const data = [
-    {
-      title: "je suis un titre de test",
-      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
-      technos: ["HTML", "CSS", "JAVASCRIPT"],
-    },
-    {
-      title: "je suis un titre de test",
-      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
-      technos: ["HTML", "CSS", "JAVASCRIPT"],
-    },
-    {
-      title: "je suis un titre de test",
-      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
-      technos: ["HTML", "CSS", "JAVASCRIPT"],
-    },
-    {
-      title: "je suis un titre de test",
-      imageUrl: "../../../../public/images/components/mescodes/codecards/5.jpg",
-      technos: ["HTML", "CSS", "JAVASCRIPT"],
-    },
-  ];
+  const handleTitleChange = (e) => setTitle(e.target.value);
+  const handleTechnosChange = (newTechnos) => setTechnos(newTechnos);
+  const handleImageUrlChange = (url) => setImageUrl(url);
+  const handleImageFileChange = (file) => setImageFile(file);
+  const handleModalClose = () => setIsModalOpen(false);
+  const handleNewItemClick = () => setIsModalOpen(true);
 
   return (
     <div className="container">
-      <div className="top-content">
+      <div className="top-elements">
         <div className="title">
-          <Title title="Ma collection de code" />
+          <Title />
         </div>
-
-        <div className="container-elements">
-          <div className="column-elements">
-            <NewitemButton onClick={openModal} />
-            <div className="modal-element">
-              <Modal
-                isOpen={isOpen}
-                onClose={closeModal}
-                title={title}
-                imageUrl={imageUrl}
-                technos={technos}
-                onTitleChange={(e) => setTitle(e.target.value)}
-                onImageUrlChange={(e) => setImageUrl(e.target.value)}
-                onImageFileChange={(file) => setImageFile(file)}
-                onTechnosChange={(e) => setTechnos(e.target.value)}
-                onSubmit={handleSubmit}
-                showLangageInput={true}
-                showImageInput={true}
-              />
-            </div>
+        <div className="right-elements">
+          <div className="filter-bar">
+            <FilterBar />
           </div>
-
-          <FilterBar />
+          <div className="add-btn">
+            <NewitemButton onClick={handleNewItemClick} />
+          </div>
         </div>
       </div>
 
       <CodeCards data={data} />
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        title={title}
+        onTitleChange={handleTitleChange}
+        technos={technos}
+        onTechnosChange={handleTechnosChange}
+        imageFile={imageFile}
+        onImageFileChange={handleImageFileChange}
+        imageUrl={imageUrl}
+        onImageUrlChange={handleImageUrlChange}
+        showImageInput={true}
+        showLangageInput={true}
+      />
     </div>
   );
 }
