@@ -4,6 +4,7 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 
 // Affiche le panneau de la navbar qui contient le bouton de notification ainsi que le profil
 // Le bouton "edit_profil" permet de modifier le profil de l'utilisateur
+
 export function PanelProfil() {
   return (
     <div className="panel_profil_container">

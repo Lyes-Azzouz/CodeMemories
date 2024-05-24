@@ -10,6 +10,7 @@ import { MesCodes } from "./pages/MesCodes_page/MesCodes.jsx";
 import { MesNotes } from "./pages/MesNotes_page/MesNotes.jsx";
 import { Ressources } from "./pages/Ressources_page/Ressources.jsx";
 import { CardContentDetail } from "./pages/CardContentDetail_page/CardContentDetail.jsx";
+import { LoginPage } from "./pages/Login_page/LoginPage.jsx";
 // Hooks
 import { useState } from "react";
 
@@ -27,6 +28,7 @@ function App() {
         <Route path="/detail" element={<CardContentDetail />} />
         <Route path="/Mes_notes" element={<MesNotes />} />
         <Route path="/Ressources" element={<Ressources />} />
+        <Route path="/Login" element={<LoginPage />} />
       </Routes>
     </Router>
   );

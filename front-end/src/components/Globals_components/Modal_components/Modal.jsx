@@ -2,11 +2,12 @@
 import "./modal__style.scss";
 // Hooks
 import { useState, useRef, useEffect } from "react";
-import { IoCloseSharp, IoAddOutline } from "react-icons/io5";
 // React Icons
+import { IoCloseSharp, IoAddOutline } from "react-icons/io5";
 import { GiMove } from "react-icons/gi";
 // Libs
 import { v4 as uuidv4 } from "uuid";
+import { getAuth } from "firebase/auth"; // Importer la fonction getAuth depuis firebase/auth
 
 /**
  * Composant Modal
@@ -21,25 +22,24 @@ import { v4 as uuidv4 } from "uuid";
  * @param {boolean} props.showLangageInput - Affiche ou cache l'entrée de langage.
  */
 export function Modal(props) {
+  // États locaux du composant
   const [isDragging, setIsDragging] = useState(false); // État pour le déplacement de la modal
-  const [textAreas, setTextAreas] = useState([{ id: uuidv4(), language: "" }]); // État pour les champs de texte
+  const [textAreas, setTextAreas] = useState([{ id: uuidv4(), language: "" }]); // État pour les zones de texte
   const [position, setPosition] = useState({
+    // État pour la position de la modal
     x: window.innerWidth / 2 - 200,
     y: window.innerHeight / 2 - 220,
-  }); // Position de la modal
-  const [offset, setOffset] = useState({ x: 0, y: 0 }); // Offset pour le déplacement de la modal
+  });
+  const [offset, setOffset] = useState({ x: 0, y: 0 }); // État pour le décalage lors du déplacement
   const modalRef = useRef(null); // Référence à la modal
-  const [selectedImageFile, setSelectedImageFile] = useState(null); // Fichier image sélectionné
+  const [selectedImageFile, setSelectedImageFile] = useState(null); // État pour le fichier image sélectionné
 
-  /**
-   * Gère la soumission du formulaire.
-   * @param {Event} e - L'événement de soumission.
-   */
+  // Fonction pour soumettre le formulaire
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const cardId = uuidv4(); // Générer un ID unique pour la carte
+    const cardId = uuidv4(); // Génère un identifiant unique pour la carte
     const formData = new FormData();
-    formData.append("id", cardId); // Ajouter l'ID au formulaire
+    formData.append("id", cardId);
     formData.append("title", props.title);
     formData.append(
       "technos",
@@ -50,53 +50,52 @@ export function Modal(props) {
     }
 
     try {
+      const auth = getAuth();
+      const token = await auth.currentUser.getIdToken();
       const response = await fetch("http://localhost:3000/api/data", {
         method: "POST",
         body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.ok) {
         console.log("Données envoyées avec succès");
-        props.onClose();
+        props.onClose(); // Ferme la modal après l'envoi des données
         props.onAddCard({
+          // Ajoute la carte avec les données
           id: cardId,
           title: props.title,
           technos: textAreas.map((area) => area.language),
           imageUrl: props.imageUrl,
         });
       } else {
-        console.error("Erreur lors de l'envoi des données");
+        console.error("Erreur lors de l'envoi des données"); // Affiche une erreur en cas d'échec de l'envoi des données
       }
     } catch (error) {
-      console.error("Erreur lors de l'envoi des données:", error);
+      console.error("Erreur lors de l'envoi des données:", error); // Affiche une erreur en cas de problème lors de l'envoi des données
     }
   };
 
-  /**
-   * Gère le début du déplacement de la modal.
-   * @param {Event} e - L'événement de la souris.
-   */
+  // Fonction pour gérer le clic sur la modal
   const handleMouseDown = (e) => {
     const modalRect = modalRef.current.getBoundingClientRect();
     setOffset({ x: e.clientX - modalRect.left, y: e.clientY - modalRect.top });
     setIsDragging(true);
   };
 
-  /**
-   * Gère le déplacement de la modal.
-   * @param {Event} e - L'événement de la souris.
-   */
+  // Fonction pour gérer le mouvement de la modal
   const handleMouseMove = (e) => {
     if (isDragging) {
       setPosition({ x: e.clientX - offset.x, y: e.clientY - offset.y });
     }
   };
 
-  /**
-   * Gère la fin du déplacement de la modal.
-   */
+  // Fonction pour gérer le relâchement du clic de la souris
   const handleMouseUp = () => setIsDragging(false);
 
+  // Effet pour ajouter et retirer les écouteurs d'événements lors du déplacement de la modal
   useEffect(() => {
     const mouseMoveListener = (e) => handleMouseMove(e);
     const mouseUpListener = () => handleMouseUp();
@@ -115,28 +114,20 @@ export function Modal(props) {
     };
   }, [isDragging, offset]);
 
+  // Si la modal n'est pas ouverte, ne rien afficher
   if (!props.isOpen) return null;
 
-  /**
-   * Ajoute un nouveau champ de texte.
-   */
+  // Fonction pour ajouter une nouvelle zone de texte
   const addNewTextArea = () => {
     setTextAreas([...textAreas, { id: uuidv4(), value: "", language: "" }]);
   };
 
-  /**
-   * Supprime un champ de texte.
-   * @param {string} id - L'ID du champ de texte à supprimer.
-   */
+  // Fonction pour supprimer une zone de texte
   const removeTextArea = (id) => {
     setTextAreas(textAreas.filter((textArea) => textArea.id !== id));
   };
 
-  /**
-   * Gère le changement de texte dans un champ de texte.
-   * @param {string} id - L'ID du champ de texte.
-   * @param {string} value - Le nouveau texte.
-   */
+  // Fonction pour gérer le changement de texte dans une zone de texte
   const handleTextAreaChange = (id, value) => {
     setTextAreas((prev) =>
       prev.map((textArea) =>
@@ -145,11 +136,7 @@ export function Modal(props) {
     );
   };
 
-  /**
-   * Gère le changement de langage dans un champ de texte.
-   * @param {string} id - L'ID du champ de texte.
-   * @param {string} language - Le nouveau langage.
-   */
+  // Fonction pour gérer le changement de langage dans une zone de texte
   const handleLanguageChange = (id, language) => {
     setTextAreas((prev) =>
       prev.map((textArea) =>
@@ -158,14 +145,11 @@ export function Modal(props) {
     );
   };
 
-  /**
-   * Gère le changement de fichier image.
-   * @param {Event} e - L'événement de changement.
-   */
+  // Fonction pour gérer le changement d'image
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     props.onImageUrlChange(URL.createObjectURL(file));
-    setSelectedImageFile(file); // Met à jour selectedImageFile avec le fichier sélectionné
+    setSelectedImageFile(file);
   };
 
   return (

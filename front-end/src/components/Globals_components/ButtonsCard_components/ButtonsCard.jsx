@@ -6,7 +6,7 @@ import { BiSolidMessageSquareEdit } from "react-icons/bi";
 import { MdOpenInNew } from "react-icons/md";
 
 /**
- * Composant ButtonsCard
+ * Components ButtonsCard.
  * @param {Object} props - Les propriétés passées au composant.
  * @param {string} props.cardId - L'ID de la carte associée aux boutons.
  * @param {Function} props.onDelete - La fonction de suppression de la carte.

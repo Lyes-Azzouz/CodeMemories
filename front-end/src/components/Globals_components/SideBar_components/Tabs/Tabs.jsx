@@ -1,3 +1,4 @@
+// Style
 import "./tabs__style.scss";
 
 // Onglets de navigation dans la barre latérale

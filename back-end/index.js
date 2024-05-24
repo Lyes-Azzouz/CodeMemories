@@ -28,116 +28,193 @@ admin.initializeApp({
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
 });
 
+// Module firebase pour les opérations d'authentification
+const firebase = require("firebase/app");
+require("firebase/auth");
+
+firebase.initializeApp({
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+});
+
 // Configuration de multer pour le stockage des fichiers en mémoire
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-
 const bucket = admin.storage().bucket(); // Initialisation du bucket de stockage Firebase
+
+// Import de la logique de sécurité via Jwt
+const verifyToken = require("./jwt/verifyToken");
+
+// Route pour inscrire un nouvel utilisateur
+app.post("/signup", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password);
+    res.status(201).json({ message: "Inscription réussie", user });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// Route pour la connexion des utilisateurs
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password);
+    const token = await user.user.getIdToken();
+    res.status(200).json({ message: "Connexion réussie", token });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// Route pour la déconnexion des utilisateurs
+app.post("/logout", async (req, res) => {
+  try {
+    await firebase.auth().signOut();
+    res.status(200).json({ message: "Déconnexion réussie" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // Route pour afficher une page d'accueil
 app.get("/", (req, res) => {
   res.send("salut");
 });
 
-// Route pour récupérer les données de Firebase
-app.get("/api/data", async (req, res) => {
+// Route pour envoyer des données à Firebase
+app.post(
+  "/api/data",
+  verifyToken,
+  upload.single("imageFile"),
+  async (req, res) => {
+    console.log("Données reçues du client:", req.body);
+    try {
+      const { title, technos } = Object.assign({}, req.body);
+      const userId = req.user ? req.user.uid : null;
+
+      // Vérification et parsing du champ technos
+      let technosArray;
+      try {
+        technosArray =
+          typeof technos === "string" ? JSON.parse(technos) : technos;
+      } catch (err) {
+        throw new Error(
+          "Le champ 'technos' doit être un tableau ou une chaîne JSON valide"
+        );
+      }
+
+      if (!Array.isArray(technosArray)) {
+        throw new Error("Le champ 'technos' doit être un tableau");
+      }
+
+      let imageUrl = null;
+      if (req.file) {
+        const blob = bucket.file(Date.now() + "-" + req.file.originalname);
+        const blobStream = blob.createWriteStream({
+          metadata: {
+            contentType: req.file.mimetype,
+          },
+        });
+
+        blobStream.on("error", (err) => {
+          console.error("Erreur lors de l'upload de l'image:", err);
+          res.status(500).json({ error: "Erreur lors de l'upload de l'image" });
+        });
+
+        blobStream.on("finish", async () => {
+          imageUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+
+          // Créer la nouvelle carte avec l'ID de l'utilisateur
+          const newCard = {
+            title,
+            technos: technosArray,
+            imageUrl,
+            userId, // Associer la carte à l'ID de l'utilisateur
+          };
+
+          // Enregistrer la nouvelle carte dans Firestore
+          await admin.firestore().collection("card").add(newCard);
+
+          res.status(201).send("Donnée envoyée !");
+        });
+
+        blobStream.end(req.file.buffer);
+      } else {
+        // Créer la nouvelle carte avec l'ID de l'utilisateur
+        const newCard = {
+          title,
+          technos: technosArray,
+          imageUrl,
+          userId, // Associer la carte à l'ID de l'utilisateur
+        };
+
+        // Enregistrer la nouvelle carte dans Firestore
+        await admin.firestore().collection("card").add(newCard);
+
+        res.status(201).send("Donnée envoyée !");
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'envoi des données: ", error.message);
+      res.status(500).json({
+        error: "Erreur lors de l'envoi des données: " + error.message,
+      });
+    }
+  }
+);
+
+// Route pour récupérer les données de Firebase associées à l'utilisateur
+app.get("/api/data", verifyToken, async (req, res) => {
+  const userId = req.user ? req.user.uid : null;
+
   try {
-    const db = admin.firestore();
-    const snapshot = await db.collection("card").get();
-    const data = snapshot.docs.map((doc) => doc.data());
-    console.log("Données récupérées de Firebase:", data);
+    // Récupérer les données associées à l'utilisateur depuis Firestore
+    const snapshot = await admin
+      .firestore()
+      .collection("card")
+      .where("userId", "==", userId)
+      .get();
+    const data = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+
     res.json(data);
   } catch (error) {
-    console.error("Erreur de récupération des données ", error);
+    console.error("Erreur de récupération des données: ", error);
     res.status(500).json({ error: "Erreur de récupération des données" });
   }
 });
 
-// Route pour envoyer des données à Firebase
-app.post("/api/data", upload.single("imageFile"), async (req, res) => {
-  console.log("Données reçues du client:", req.body);
-  try {
-    const { id, title, technos } = req.body;
-
-    // Vérification et parsing du champ technos
-    let technosArray;
-    try {
-      technosArray =
-        typeof technos === "string" ? JSON.parse(technos) : technos;
-    } catch (err) {
-      throw new Error(
-        "Le champ 'technos' doit être un tableau ou une chaîne JSON valide"
-      );
-    }
-
-    if (!Array.isArray(technosArray)) {
-      throw new Error("Le champ 'technos' doit être un tableau");
-    }
-
-    let imageUrl = null;
-    if (req.file) {
-      const encodedFileName = encodeURIComponent(req.file.originalname);
-      const blob = bucket.file(`${Date.now()}_${encodedFileName}`);
-      const blobStream = blob.createWriteStream({
-        metadata: {
-          contentType: req.file.mimetype,
-        },
-      });
-
-      blobStream.on("error", (err) => {
-        console.error(err);
-        return res
-          .status(500)
-          .json({ error: "Erreur lors du téléchargement de l'image" });
-      });
-
-      blobStream.on("finish", async () => {
-        imageUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
-        const newCard = {
-          id, // Ajouter l'ID ici
-          title,
-          technos: technosArray,
-          imageUrl, // Définir l'URL de l'image ici
-        };
-        const db = admin.firestore();
-        await db.collection("card").doc(id).set(newCard); // Utiliser set() pour définir l'ID
-        console.log("Données envoyées à Firebase:", newCard);
-        res.status(201).send("Donnée envoyée !");
-      });
-
-      blobStream.end(req.file.buffer);
-    } else {
-      const newCard = {
-        id, // Ajouter l'ID ici
-        title,
-        technos: technosArray,
-        imageUrl, // Définir l'URL de l'image ici, même si elle est null
-      };
-      const db = admin.firestore();
-      await db.collection("card").doc(id).set(newCard); // Utiliser set() pour définir l'ID
-      console.log("Données envoyées à Firebase sans image:", newCard);
-      res.status(201).send("Donnée envoyée !");
-    }
-  } catch (error) {
-    console.error("Erreur lors de l'envoi des données: ", error.message);
-    res
-      .status(500)
-      .json({ error: "Erreur lors de l'envoi des données: " + error.message });
-  }
-});
-
-// Route pour supprimer une carte par ID
-app.delete("/api/data/:id", async (req, res) => {
+// Route pour supprimer une carte par ID (en vérifiant si elle appartient à l'utilisateur)
+app.delete("/api/data/:id", verifyToken, async (req, res) => {
+  const userId = req.user ? req.user.uid : null; // Récupérer l'ID de l'utilisateur à partir de Firebase Authentication
   const { id } = req.params;
 
   try {
-    const db = admin.firestore();
-    const cardRef = db.collection("card").doc(id);
+    // Vérifier si la carte appartient à l'utilisateur
+    const cardRef = admin.firestore().collection("card").doc(id);
+    const card = await cardRef.get();
+    if (!card.exists) {
+      return res.status(404).send("Carte non trouvée");
+    }
+    if (card.data().userId !== userId) {
+      return res
+        .status(403)
+        .send("Vous n'êtes pas autorisé à supprimer cette carte");
+    }
+
+    // Supprimer la carte de Firestore
     await cardRef.delete();
-    console.log("Document supprimé avec succès:", id);
+
     res.status(200).send("Donnée supprimée avec succès !");
   } catch (error) {
-    console.error("Erreur lors de la suppression des données: ", error.message);
+    console.error("Erreur lors de la suppression des données: ", error);
     res.status(500).json({
       error: "Erreur lors de la suppression des données: " + error.message,
     });

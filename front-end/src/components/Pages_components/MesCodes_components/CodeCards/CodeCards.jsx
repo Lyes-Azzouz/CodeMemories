@@ -9,6 +9,7 @@ import { ButtonsCard } from "../../../Globals_components/ButtonsCard_components/
  * @param {Array} props.data - Les données des card à afficher.
  * @param {Function} props.onDelete - La fonction de suppression d'une card.
  */
+
 export function CodeCards({ data, onDelete }) {
   console.log("Data received:", data);
 

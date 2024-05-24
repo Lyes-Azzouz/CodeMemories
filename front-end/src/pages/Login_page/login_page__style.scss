@@ -1,0 +1,51 @@
+.login-page_container {
+  position: absolute;
+  height: calc(100% - 94px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 122px);
+  top: 94px;
+  left: 122px;
+
+  h2 {
+    font-size: 2.1em;
+    color: #000000;
+    margin-bottom: 100px;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    .champs {
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+      gap: 30px;
+      input {
+        display: flex;
+        flex-direction: column;
+        height: 30px;
+        width: 600px;
+      }
+    }
+    .login-btns {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      margin-top: 50px;
+      button {
+        border: none;
+        padding: 10px;
+        background-color: #22506c;
+        color: #fff;
+        border-radius: 20px;
+        cursor: pointer;
+        width: 150px;
+      }
+    }
+  }
+}

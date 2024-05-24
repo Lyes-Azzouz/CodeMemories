@@ -4,14 +4,20 @@
   align-items: center;
   cursor: pointer;
 
-  color: #fff;
-  .login-icon {
-    font-size: 1.7em;
+  a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #fff;
+    .login-icon {
+      font-size: 1.7em;
+    }
+    .login-text {
+      font-size: 0.8em;
+    }
   }
-  .login-text {
-    font-size: 0.8em;
+  a:hover {
+    color: #ffd600;
   }
-}
-.login-container:hover {
-  color: #ffd600;
 }

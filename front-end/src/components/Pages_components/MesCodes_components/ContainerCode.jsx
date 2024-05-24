@@ -8,113 +8,140 @@ import { NewitemButton } from "./NewItem_button_components/NewItemButton";
 import { Modal } from "../../Globals_components/Modal_components/Modal";
 // Hooks
 import { useState, useEffect } from "react";
+// Libs
+import { getAuth } from "firebase/auth"; // Importer la fonction getAuth depuis firebase/auth
 
 /**
  * Composant Container
  * @returns {JSX.Element} Le composant Container.
  */
 export function Container() {
-  // Initialisation des états locaux
-  const [data, setData] = useState([]);
-  const [title, setTitle] = useState("");
-  const [technos, setTechnos] = useState([]);
-  const [imageFile, setImageFile] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // Déclare les états locaux du composant
+  const [data, setData] = useState([]); // État pour stocker les données
+  const [title, setTitle] = useState(""); // État pour stocker le titre
+  const [technos, setTechnos] = useState([]); // État pour stocker les technologies
+  const [imageFile, setImageFile] = useState(null); // État pour stocker le fichier image
+  const [imageUrl, setImageUrl] = useState(""); // État pour stocker l'URL de l'image
+  const [isModalOpen, setIsModalOpen] = useState(false); // État pour contrôler l'ouverture du modal
 
-  // Effet pour charger les données initiales
+  // Utilise useEffect pour effectuer un fetch des données lors du montage du composant
   useEffect(() => {
-    fetch("http://localhost:3000/api/data")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok " + response.statusText);
+    const fetchData = async () => {
+      try {
+        // Récupère l'authentification actuelle de Firebase
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
+        // Vérifie si l'utilisateur est authentifié
+        if (!currentUser) {
+          console.warn("User is not authenticated"); // Affiche un avertissement si l'utilisateur n'est pas authentifié
+          return;
         }
-        return response.json();
-      })
-      .then((data) => {
-        // Formater les données pour inclure l'ID
+        // Récupère le token de l'utilisateur
+        const token = await currentUser.getIdToken();
+        // Effectue une requête pour récupérer les données
+        const response = await fetch("http://localhost:3000/api/data", {
+          headers: {
+            Authorization: `Bearer ${token}`, // Ajoute le token dans les en-têtes de la requête
+          },
+        });
+
+        // Vérifie si la réponse est correcte
+        if (!response.ok) {
+          throw new Error("Network response was not ok " + response.statusText); // Lance une erreur si la réponse n'est pas correcte
+        }
+
+        // Parse les données JSON de la réponse
+        const data = await response.json();
+        // Formate les données récupérées
         const formattedData = data.map((doc) => ({
           ...doc,
           id: doc.id,
         }));
-        setData(formattedData);
-      })
-      .catch((error) => {
-        console.error("Erreur lors du fetch des données: ", error);
-      });
-  }, []);
+        setData(formattedData); // Met à jour l'état des données
+      } catch (error) {
+        console.error("Erreur lors du fetch des données: ", error); // Affiche une erreur en cas de problème lors du fetch
+      }
+    };
 
-  // Fonction pour supprimer une card
+    fetchData(); // Appelle la fonction fetchData
+  }, []); // Dépendance vide pour n'exécuter qu'une seule fois au montage
+
+  // Fonction pour gérer la suppression d'une carte
   const handleDelete = async (id) => {
     try {
+      // Récupère l'authentification actuelle de Firebase
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+      // Vérifie si l'utilisateur est authentifié
+      if (!currentUser) {
+        console.warn("User is not authenticated"); // Affiche un avertissement si l'utilisateur n'est pas authentifié
+        return;
+      }
+      // Récupère le token de l'utilisateur
+      const token = await currentUser.getIdToken();
+      // Effectue une requête pour supprimer les données
       const response = await fetch(`http://localhost:3000/api/data/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`, // Ajoute le token dans les en-têtes de la requête
+        },
       });
 
+      // Vérifie si la réponse est correcte
       if (response.ok) {
-        console.log("Données supprimées avec succès");
-        // Mettre à jour l'état local pour retirer la carte supprimée
-        setData((prevData) => prevData.filter((card) => card.id !== id));
+        console.log("Données supprimées avec succès"); // Affiche un message de succès
+        setData((prevData) => prevData.filter((card) => card.id !== id)); // Met à jour l'état des données en filtrant la carte supprimée
       } else {
-        console.error("Erreur lors de la suppression des données");
+        console.error("Erreur lors de la suppression des données"); // Affiche une erreur si la suppression échoue
       }
     } catch (error) {
-      console.error("Erreur lors de la suppression des données:", error);
+      console.error("Erreur lors de la suppression des données:", error); // Affiche une erreur en cas de problème lors de la suppression
     }
   };
 
-  // Fonctions pour gérer les changements des champs de saisies
-  const handleTitleChange = (e) => setTitle(e.target.value);
-  const handleTechnosChange = (newTechnos) => setTechnos(newTechnos);
-  const handleImageUrlChange = (url) => setImageUrl(url);
-  const handleImageFileChange = (file) => setImageFile(file);
-  const handleModalClose = () => setIsModalOpen(false);
-  const handleNewItemClick = () => setIsModalOpen(true);
-
-  // Fonction pour ajouter une nouvelle carte
+  // Fonctions pour gérer les changements d'état
+  const handleTitleChange = (e) => setTitle(e.target.value); // Met à jour l'état du titre
+  const handleTechnosChange = (newTechnos) => setTechnos(newTechnos); // Met à jour l'état des technologies
+  const handleImageUrlChange = (url) => setImageUrl(url); // Met à jour l'état de l'URL de l'image
+  const handleImageFileChange = (file) => setImageFile(file); // Met à jour l'état du fichier image
+  const handleModalClose = () => setIsModalOpen(false); // Ferme le modal
+  const handleNewItemClick = () => setIsModalOpen(true); // Ouvre le modal
   const handleAddCard = (newCard) => {
-    setData((prevData) => [...prevData, newCard]);
+    setData((prevData) => [...prevData, newCard]); // Ajoute une nouvelle carte à l'état des données
   };
 
-  // Rendu JSX du composant Container
   return (
     <div className="container">
-      {/* Éléments du haut */}
       <div className="top-elements">
         <div className="title">
-          {/* Composant Title */}
-          <Title />
+          <Title /> {/* Affiche le composant Title */}
         </div>
         <div className="right-elements">
           <div className="filter-bar">
-            {/* Composant FilterBar */}
-            <FilterBar />
+            <FilterBar /> {/* Affiche le composant FilterBar */}
           </div>
           <div className="add-btn">
-            {/* Composant NewitemButton */}
-            <NewitemButton onClick={handleNewItemClick} />
+            <NewitemButton onClick={handleNewItemClick} />{" "}
+            {/* Affiche le bouton pour ajouter un nouvel élément */}
           </div>
         </div>
       </div>
-
-      {/* Composant CodeCards pour afficher les card */}
-      <CodeCards data={data} onDelete={handleDelete} />
-
-      {/* Composant Modal pour créer une nouvelle card */}
+      <CodeCards data={data} onDelete={handleDelete} />{" "}
+      {/* Affiche les cartes de code avec la possibilité de supprimer */}
       <Modal
-        isOpen={isModalOpen}
-        onClose={handleModalClose}
-        title={title}
-        onTitleChange={handleTitleChange}
-        technos={technos}
-        onTechnosChange={handleTechnosChange}
-        imageFile={imageFile}
-        onImageFileChange={handleImageFileChange}
-        imageUrl={imageUrl}
-        onImageUrlChange={handleImageUrlChange}
-        showImageInput={true}
-        showLangageInput={true}
-        onAddCard={handleAddCard}
+        isOpen={isModalOpen} // Contrôle l'ouverture du modal
+        onClose={handleModalClose} // Ferme le modal
+        title={title} // Passe le titre au modal
+        onTitleChange={handleTitleChange} // Gère le changement de titre
+        technos={technos} // Passe les technologies au modal
+        onTechnosChange={handleTechnosChange} // Gère le changement de technologies
+        imageFile={imageFile} // Passe le fichier image au modal
+        onImageFileChange={handleImageFileChange} // Gère le changement de fichier image
+        imageUrl={imageUrl} // Passe l'URL de l'image au modal
+        onImageUrlChange={handleImageUrlChange} // Gère le changement d'URL de l'image
+        showImageInput={true} // Affiche l'entrée d'image
+        showLangageInput={true} // Affiche l'entrée de langage
+        onAddCard={handleAddCard} // Gère l'ajout d'une nouvelle carte
       />
     </div>
   );
