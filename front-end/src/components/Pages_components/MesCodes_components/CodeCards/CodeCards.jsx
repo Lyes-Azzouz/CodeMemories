@@ -2,6 +2,11 @@
 import "./codecards.scss";
 // Components
 import { ButtonsCard } from "../../../Globals_components/ButtonsCard_components/ButtonsCard";
+// Hooks
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+// Context
+import { CardsContentSelectContext } from "../../../../context/CardsContentSelectContext";
 
 /**
  * Composant CodeCards
@@ -11,11 +16,15 @@ import { ButtonsCard } from "../../../Globals_components/ButtonsCard_components/
  * @param {Function} props.onSelectCard - La fonction de sélection d'une card.
  */
 export function CodeCards({ data, onDelete, onSelectCard }) {
+  const navigate = useNavigate();
+  const { setSelectedCard } = useContext(CardsContentSelectContext);
+
   console.log("Data received:", data);
 
   const handleOpen = (cardId) => {
     const card = data.find((card) => card.id === cardId);
-    onSelectCard(card);
+    setSelectedCard(card);
+    navigate("/Mes_codes/detail");
   };
 
   return (

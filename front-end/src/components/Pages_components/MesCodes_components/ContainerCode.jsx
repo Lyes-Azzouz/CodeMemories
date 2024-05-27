@@ -1,6 +1,5 @@
 // Style
 import "./container.scss";
-
 // Components
 import { Title } from "./Title/Title";
 import { CodeCards } from "./CodeCards/CodeCards";
@@ -8,26 +7,26 @@ import { FilterBar } from "../../Globals_components/FilterBar_components/FilterB
 import { NewitemButton } from "./NewItem_button_components/NewItemButton";
 import { Modal } from "../../Globals_components/Modal_components/Modal";
 import { ContainerCardContent } from "../CardContentDetail_components/ContainerCardContent";
-
 // Hooks
-import { useState, useEffect } from "react";
-
+import { useState, useEffect, useContext } from "react";
+// Context
+import { CardsContentSelectContext } from "../../../context/CardsContentSelectContext";
 // Libs
 import { getAuth } from "firebase/auth";
 
-// Composant principal pour afficher les cartes et les détails des cartes sélectionnées
 export function Container() {
-  const [data, setData] = useState([]); // État pour stocker les données des card
-  const [title, setTitle] = useState(""); // État pour stocker le titre de la nouvelle card
-  const [technos, setTechnos] = useState([]); // État pour stocker les technologies de la nouvelle card
-  const [imageFile, setImageFile] = useState(null); // État pour stocker le fichier image de la nouvelle card
-  const [imageUrl, setImageUrl] = useState(""); // État pour stocker l'URL de l'image de la nouvelle card
-  const [textArea, setTextArea] = useState(""); // État pour stocker le texte de la nouvelle card
-  const [isModalOpen, setIsModalOpen] = useState(false); // État pour gérer l'ouverture du modal
-  const [selectedCard, setSelectedCard] = useState(null); // État pour stocker la card sélectionnée
+  const [data, setData] = useState([]);
+  const [title, setTitle] = useState("");
+  const [technos, setTechnos] = useState([]);
+  const [imageFile, setImageFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [textArea, setTextArea] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { selectedCard, setSelectedCard } = useContext(
+    CardsContentSelectContext
+  );
 
   useEffect(() => {
-    // Fonction pour récupérer les données des card
     const fetchData = async () => {
       try {
         const auth = getAuth();
@@ -52,7 +51,7 @@ export function Container() {
           ...doc,
           id: doc.id,
         }));
-        setData(formattedData); // Met à jour l'état avec les données formatées
+        setData(formattedData);
       } catch (error) {
         console.error("Erreur lors du fetch des données: ", error);
       }
@@ -61,7 +60,6 @@ export function Container() {
     fetchData();
   }, []);
 
-  // Fonction pour supprimer une card
   const handleDelete = async (id) => {
     try {
       const auth = getAuth();
@@ -80,7 +78,7 @@ export function Container() {
 
       if (response.ok) {
         console.log("Données supprimées avec succès");
-        setData((prevData) => prevData.filter((card) => card.id !== id)); // Met à jour l'état après suppression
+        setData((prevData) => prevData.filter((card) => card.id !== id));
       } else {
         console.error("Erreur lors de la suppression des données");
       }
@@ -89,7 +87,6 @@ export function Container() {
     }
   };
 
-  // Fonctions de gestion des états pour les entrées du formulaire
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleTechnosChange = (newTechnos) => setTechnos(newTechnos);
   const handleTextAreaChange = (e) => setTextArea(e.target.value);
@@ -98,13 +95,14 @@ export function Container() {
   const handleModalClose = () => setIsModalOpen(false);
   const handleNewItemClick = () => setIsModalOpen(true);
 
-  // Fonction pour ajouter une nouvelle card
   const handleAddCard = (newCard) => {
     setData((prevData) => [...prevData, newCard]);
   };
 
-  // Fonction pour sélectionner une card
-  const handleSelectCard = (card) => setSelectedCard(card);
+  const handleSelectCard = (card) => {
+    console.log("card selected : ", card);
+    setSelectedCard(card);
+  };
 
   return (
     <div className="container">
@@ -126,9 +124,7 @@ export function Container() {
         onDelete={handleDelete}
         onSelectCard={handleSelectCard}
       />
-      {/* Afficher les détails de la card sélectionnée */}
-      {selectedCard && <ContainerCardContent card={selectedCard} />}
-      {/* Modal pour ajouter une nouvelle card */}
+      {selectedCard && <ContainerCardContent />}
       <Modal
         isOpen={isModalOpen}
         onClose={handleModalClose}

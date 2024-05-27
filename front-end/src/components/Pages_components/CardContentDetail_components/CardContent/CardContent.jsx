@@ -11,15 +11,18 @@ import "./card-content__style.scss";
  * @param {string} props.imageUrl - L'URL de l'image à afficher
  */
 export function CardContent({ title, technos, textAreas, imageUrl }) {
-  console.log(technos);
-  console.log(textAreas);
+  // Test afin de voir si les données en props sont bien récupérées
+  console.log("Title:", title);
+  console.log("Technos:", technos);
+  console.log("TextAreas:", textAreas);
+  console.log("ImageURL:", imageUrl);
 
   return (
     <div className="card-content_container">
       <div className="card-content_top-text">
         <h3>{title}</h3>
         <p>test </p>
-        <span>{technos} </span>
+        <span>{technos && technos.join(", ")} </span>
       </div>
       <div className="card-content_image">
         <img src={imageUrl} alt={title} />

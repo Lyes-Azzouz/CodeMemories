@@ -13,24 +13,27 @@ import { CardContentDetail } from "./pages/CardContentDetail_page/CardContentDet
 import { LoginPage } from "./pages/Login_page/LoginPage.jsx";
 // Hooks
 import { useState } from "react";
-
+// Custom Hooks
+import { CardsContentProvider } from "./context/CardsContentSelectContext.jsx";
 // Application
 function App() {
   const [tabIsActive, setTabIsActive] = useState("");
 
   // Création des routes (router-dom)
   return (
-    <Router>
-      <NavBar />
-      <SideBar tabIsActive={tabIsActive} setTabIsActive={setTabIsActive} />
-      <Routes>
-        <Route path="/Mes_codes" element={<MesCodes />} />
-        <Route path="/detail" element={<CardContentDetail />} />
-        <Route path="/Mes_notes" element={<MesNotes />} />
-        <Route path="/Ressources" element={<Ressources />} />
-        <Route path="/Login" element={<LoginPage />} />
-      </Routes>
-    </Router>
+    <CardsContentProvider>
+      <Router>
+        <NavBar />
+        <SideBar tabIsActive={tabIsActive} setTabIsActive={setTabIsActive} />
+        <Routes>
+          <Route path="/Mes_codes" element={<MesCodes />} />
+          <Route path="/Mes_codes/detail" element={<CardContentDetail />} />
+          <Route path="/Mes_notes" element={<MesNotes />} />
+          <Route path="/Ressources" element={<Ressources />} />
+          <Route path="/Login" element={<LoginPage />} />
+        </Routes>
+      </Router>
+    </CardsContentProvider>
   );
 }
 
