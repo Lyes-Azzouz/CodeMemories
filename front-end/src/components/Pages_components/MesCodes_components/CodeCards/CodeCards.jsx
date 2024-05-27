@@ -1,4 +1,4 @@
-// Style
+// CodeCards.js
 import "./codecards.scss";
 // Components
 import { ButtonsCard } from "../../../Globals_components/ButtonsCard_components/ButtonsCard";
@@ -8,30 +8,33 @@ import { ButtonsCard } from "../../../Globals_components/ButtonsCard_components/
  * @param {Object} props - Les propriétés passées au composant.
  * @param {Array} props.data - Les données des card à afficher.
  * @param {Function} props.onDelete - La fonction de suppression d'une card.
+ * @param {Function} props.onSelectCard - La fonction de sélection d'une card.
  */
-
-export function CodeCards({ data, onDelete }) {
+export function CodeCards({ data, onDelete, onSelectCard }) {
   console.log("Data received:", data);
+
+  const handleOpen = (cardId) => {
+    const card = data.find((card) => card.id === cardId);
+    onSelectCard(card);
+  };
 
   return (
     <div className="cards_container">
-      {/* Mapping des données des cards */}
       {data.map((card, index) => (
         <div className="card" key={index}>
           <div className="content">
-            {/* Titre et image de la card */}
             <div className="title_and_image">
               <h3>{card.title}</h3>
               <img src={card.imageUrl} alt={card.title} />
-              {/* Boutons d'action pour la card */}
               <div className="buttons">
-                {/* Composant ButtonsCard pour la gestion des actions sur la card */}
-                <ButtonsCard cardId={card.id} onDelete={onDelete} />
+                <ButtonsCard
+                  cardId={card.id}
+                  onDelete={onDelete}
+                  onOpen={handleOpen} // Passe handleOpen à ButtonsCard pour le bouton "Ouvrir"
+                />
               </div>
             </div>
-            {/* Liste des technologies associées à la card */}
             <div className="technos">
-              {/* Map des technos */}
               {card.technos.map((techno, index) => (
                 <p key={index}>{techno}</p>
               ))}

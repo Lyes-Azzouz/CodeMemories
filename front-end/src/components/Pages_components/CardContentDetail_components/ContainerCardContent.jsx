@@ -1,12 +1,22 @@
-// Style
-import "../CardContentDetail_components/container-card-content__style.scss";
+// ContainerCardContent.js
+import "./container-card-content__style.scss";
 // Components
 import { CardContent } from "./CardContent/CardContent";
 
-export function ContainerCardContent() {
+/**
+ * Composant ContainerCardContent
+ * @param {Object} props - Les propriétés passées au composant.
+ * @param {Object} props.card - La card à afficher.
+ */
+export function ContainerCardContent({ card }) {
   return (
     <div className="container-card-content">
-      <CardContent />
+      <CardContent
+        title={card.title}
+        technos={card.technos}
+        imageUrl={card.imageUrl}
+        textAreas={card.textAreas}
+      />
     </div>
   );
 }

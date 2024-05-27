@@ -20,6 +20,13 @@ import { getAuth } from "firebase/auth"; // Importer la fonction getAuth depuis 
  * @param {boolean} props.showImageInput - Affiche ou cache l'entrée d'image.
  * @param {Function} props.onImageUrlChange - Fonction de changement d'URL de l'image.
  * @param {boolean} props.showLangageInput - Affiche ou cache l'entrée de langage.
+ * @param {string} props.textAreaValue - La valeur de la zone de texte.
+ * @param {Function} props.onTextAreaChange - Fonction de changement de la zone de texte.
+ * @param {Array} props.technos - Les technologies de la carte.
+ * @param {Function} props.onTechnosChange - Fonction de changement des technologies.
+ * @param {File} props.imageFile - Le fichier image de la carte.
+ * @param {Function} props.onImageFileChange - Fonction de changement du fichier image.
+ * @returns {JSX.Element} Le composant Modal.
  */
 export function Modal(props) {
   // États locaux du composant
@@ -45,6 +52,8 @@ export function Modal(props) {
       "technos",
       JSON.stringify(textAreas.map((area) => area.language))
     );
+    formData.append("textAreaValue", props.textAreaValue);
+
     if (selectedImageFile) {
       formData.append("imageFile", selectedImageFile);
     }
@@ -69,6 +78,7 @@ export function Modal(props) {
           title: props.title,
           technos: textAreas.map((area) => area.language),
           imageUrl: props.imageUrl,
+          textAreas: textAreas.map((area) => area.value), // Ajoutez cette ligne pour inclure le contenu des textAreas
         });
       } else {
         console.error("Erreur lors de l'envoi des données"); // Affiche une erreur en cas d'échec de l'envoi des données
@@ -128,12 +138,14 @@ export function Modal(props) {
   };
 
   // Fonction pour gérer le changement de texte dans une zone de texte
-  const handleTextAreaChange = (id, value) => {
-    setTextAreas((prev) =>
-      prev.map((textArea) =>
-        textArea.id === id ? { ...textArea, value } : textArea
-      )
-    );
+  const handleTextAreaChange = (id, field, value) => {
+    const updatedTextAreas = textAreas.map((textarea) => {
+      if (textarea.id === id) {
+        return { ...textarea, [field]: value };
+      }
+      return textarea;
+    });
+    setTextAreas(updatedTextAreas);
   };
 
   // Fonction pour gérer le changement de langage dans une zone de texte
@@ -214,7 +226,7 @@ export function Modal(props) {
                     className="code-area"
                     value={textArea.value}
                     onChange={(e) =>
-                      handleTextAreaChange(textArea.id, e.target.value)
+                      handleTextAreaChange(textArea.id, "value", e.target.value)
                     }
                     rows="10"
                     cols="30"
