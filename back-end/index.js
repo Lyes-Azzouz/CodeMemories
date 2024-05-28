@@ -91,6 +91,7 @@ app.get("/", (req, res) => {
 });
 
 // Route pour envoyer des données à Firebase
+// Route pour envoyer des données à Firebase
 app.post(
   "/api/data",
   verifyToken,
@@ -98,7 +99,7 @@ app.post(
   async (req, res) => {
     console.log("Données reçues du client:", req.body);
     try {
-      const { title, technos } = Object.assign({}, req.body);
+      const { title, technos, textAreas } = Object.assign({}, req.body);
       const userId = req.user ? req.user.uid : null;
 
       // Vérification et parsing du champ technos
@@ -114,6 +115,21 @@ app.post(
 
       if (!Array.isArray(technosArray)) {
         throw new Error("Le champ 'technos' doit être un tableau");
+      }
+
+      // Vérification et parsing du champ textAreas
+      let textAreasArray;
+      try {
+        textAreasArray =
+          typeof textAreas === "string" ? JSON.parse(textAreas) : textAreas;
+      } catch (err) {
+        throw new Error(
+          "Le champ 'textAreas' doit être un tableau ou une chaîne JSON valide"
+        );
+      }
+
+      if (!Array.isArray(textAreasArray)) {
+        throw new Error("Le champ 'textAreas' doit être un tableau");
       }
 
       let imageUrl = null;
@@ -137,6 +153,7 @@ app.post(
           const newCard = {
             title,
             technos: technosArray,
+            textAreas: textAreasArray,
             imageUrl,
             userId, // Associer la carte à l'ID de l'utilisateur
           };
@@ -153,6 +170,7 @@ app.post(
         const newCard = {
           title,
           technos: technosArray,
+          textAreas: textAreasArray,
           imageUrl,
           userId, // Associer la carte à l'ID de l'utilisateur
         };

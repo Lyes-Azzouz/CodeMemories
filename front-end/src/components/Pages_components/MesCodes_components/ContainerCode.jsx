@@ -20,7 +20,7 @@ export function Container() {
   const [technos, setTechnos] = useState([]);
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
-  const [textArea, setTextArea] = useState("");
+  const [textArea, setTextArea] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { selectedCard, setSelectedCard } = useContext(
     CardsContentSelectContext
@@ -89,7 +89,7 @@ export function Container() {
 
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleTechnosChange = (newTechnos) => setTechnos(newTechnos);
-  const handleTextAreaChange = (e) => setTextArea(e.target.value);
+  const handleTextAreaChange = (newTextArea) => setTextArea(newTextArea);
   const handleImageUrlChange = (url) => setImageUrl(url);
   const handleImageFileChange = (file) => setImageFile(file);
   const handleModalClose = () => setIsModalOpen(false);
@@ -124,7 +124,7 @@ export function Container() {
         onDelete={handleDelete}
         onSelectCard={handleSelectCard}
       />
-      {selectedCard && <ContainerCardContent />}
+
       <Modal
         isOpen={isModalOpen}
         onClose={handleModalClose}

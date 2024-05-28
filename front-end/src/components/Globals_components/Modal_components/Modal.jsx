@@ -20,7 +20,7 @@ import { getAuth } from "firebase/auth"; // Importer la fonction getAuth depuis 
  * @param {boolean} props.showImageInput - Affiche ou cache l'entrée d'image.
  * @param {Function} props.onImageUrlChange - Fonction de changement d'URL de l'image.
  * @param {boolean} props.showLangageInput - Affiche ou cache l'entrée de langage.
- * @param {string} props.textAreaValue - La valeur de la zone de texte.
+ * @param {Array} props.textAreaValue - La valeur de la zone de texte.
  * @param {Function} props.onTextAreaChange - Fonction de changement de la zone de texte.
  * @param {Array} props.technos - Les technologies de la carte.
  * @param {Function} props.onTechnosChange - Fonction de changement des technologies.
@@ -31,7 +31,10 @@ import { getAuth } from "firebase/auth"; // Importer la fonction getAuth depuis 
 export function Modal(props) {
   // États locaux du composant
   const [isDragging, setIsDragging] = useState(false); // État pour le déplacement de la modal
-  const [textAreas, setTextAreas] = useState([{ id: uuidv4(), language: "" }]); // État pour les zones de texte
+  const [textAreas, setTextAreas] = useState([
+    { id: uuidv4(), language: "", value: "" },
+  ]); // État pour les zones de texte
+
   const [position, setPosition] = useState({
     // État pour la position de la modal
     x: window.innerWidth / 2 - 200,
@@ -42,9 +45,10 @@ export function Modal(props) {
   const [selectedImageFile, setSelectedImageFile] = useState(null); // État pour le fichier image sélectionné
 
   // Fonction pour soumettre le formulaire
+  // Fonction pour soumettre le formulaire
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const cardId = uuidv4(); // Génère un identifiant unique pour la carte
+    const cardId = uuidv4();
     const formData = new FormData();
     formData.append("id", cardId);
     formData.append("title", props.title);
@@ -52,7 +56,10 @@ export function Modal(props) {
       "technos",
       JSON.stringify(textAreas.map((area) => area.language))
     );
-    formData.append("textAreaValue", props.textAreaValue);
+    formData.append(
+      "textAreas",
+      JSON.stringify(textAreas.map((area) => area.value))
+    );
 
     if (selectedImageFile) {
       formData.append("imageFile", selectedImageFile);
@@ -71,20 +78,19 @@ export function Modal(props) {
 
       if (response.ok) {
         console.log("Données envoyées avec succès");
-        props.onClose(); // Ferme la modal après l'envoi des données
+        props.onClose();
         props.onAddCard({
-          // Ajoute la carte avec les données
           id: cardId,
           title: props.title,
           technos: textAreas.map((area) => area.language),
           imageUrl: props.imageUrl,
-          textAreas: textAreas.map((area) => area.value), // Ajoutez cette ligne pour inclure le contenu des textAreas
+          textAreas: textAreas.map((area) => area.value),
         });
       } else {
-        console.error("Erreur lors de l'envoi des données"); // Affiche une erreur en cas d'échec de l'envoi des données
+        console.error("Erreur lors de l'envoi des données");
       }
     } catch (error) {
-      console.error("Erreur lors de l'envoi des données:", error); // Affiche une erreur en cas de problème lors de l'envoi des données
+      console.error("Erreur lors de l'envoi des données:", error);
     }
   };
 
@@ -129,23 +135,27 @@ export function Modal(props) {
 
   // Fonction pour ajouter une nouvelle zone de texte
   const addNewTextArea = () => {
-    setTextAreas([...textAreas, { id: uuidv4(), value: "", language: "" }]);
+    setTextAreas([...textAreas, { id: uuidv4(), language: "", value: "" }]);
   };
 
   // Fonction pour supprimer une zone de texte
   const removeTextArea = (id) => {
     setTextAreas(textAreas.filter((textArea) => textArea.id !== id));
   };
-
   // Fonction pour gérer le changement de texte dans une zone de texte
-  const handleTextAreaChange = (id, field, value) => {
-    const updatedTextAreas = textAreas.map((textarea) => {
-      if (textarea.id === id) {
-        return { ...textarea, [field]: value };
-      }
-      return textarea;
-    });
-    setTextAreas(updatedTextAreas);
+  const handleTextAreaChange = (id, value) => {
+    // const updatedTextAreas = textAreasValue.map((textarea) => {
+    //   if (textarea.id === id) {
+    //     return { ...textarea, value };
+    //   }
+    //   return textarea;
+    // });
+    // setTextAreasValue(updatedTextAreas);
+    setTextAreas((prev) =>
+      prev.map((textAreas) =>
+        textAreas.id === id ? { ...textAreas, value } : textAreas
+      )
+    );
   };
 
   // Fonction pour gérer le changement de langage dans une zone de texte
@@ -226,7 +236,7 @@ export function Modal(props) {
                     className="code-area"
                     value={textArea.value}
                     onChange={(e) =>
-                      handleTextAreaChange(textArea.id, "value", e.target.value)
+                      handleTextAreaChange(textArea.id, e.target.value)
                     }
                     rows="10"
                     cols="30"
