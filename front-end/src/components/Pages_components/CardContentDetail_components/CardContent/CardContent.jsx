@@ -1,5 +1,9 @@
 // Style
 import "./card-content__style.scss";
+// Libs
+import hljs from "highlight.js";
+import "highlight.js/styles/github.css";
+import { useEffect } from "react";
 
 /**
  * Composant pour afficher le contenu détaillé d'une carte
@@ -17,19 +21,26 @@ export function CardContent({ title, technos, textAreas, imageUrl }) {
   console.log("TextAreas:", textAreas);
   console.log("ImageURL:", imageUrl);
 
+  useEffect(() => {
+    hljs.highlightAll();
+  }, []);
+
   return (
     <div className="card-content_container">
       <div className="card-content_top-text">
         <h3>{title}</h3>
-        <p>test </p>
-        <span>{technos && technos.join(", ")} </span>
       </div>
       <div className="card-content_image">
         <img src={imageUrl} alt={title} />
-      </div>
+      </div>{" "}
+      <span>{technos && technos.join(", ")} </span>
       <div className="card-content_code">
-        {/* Afficher les champs de texte si ils existent*/}
-        {textAreas && textAreas.map((text, index) => <p key={index}>{text}</p>)}
+        {textAreas &&
+          textAreas.map((text, index) => (
+            <pre key={index}>
+              <code className="code">{text} </code>
+            </pre>
+          ))}
       </div>
     </div>
   );

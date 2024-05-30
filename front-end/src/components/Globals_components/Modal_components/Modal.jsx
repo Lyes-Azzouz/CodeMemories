@@ -45,7 +45,6 @@ export function Modal(props) {
   const [selectedImageFile, setSelectedImageFile] = useState(null); // État pour le fichier image sélectionné
 
   // Fonction pour soumettre le formulaire
-  // Fonction pour soumettre le formulaire
   const handleSubmit = async (e) => {
     e.preventDefault();
     const cardId = uuidv4();
