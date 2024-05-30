@@ -21,6 +21,9 @@
     .card-content_image {
       margin-top: 30px;
       animation: content-wrait 1s ease-in-out;
+      background-color: rgba(0, 0, 0, 0.247);
+      padding: 27px 30px 20px 30px;
+      border-radius: 10px;
       img {
         object-fit: contain;
         max-height: 400px;
@@ -31,14 +34,15 @@
 
   .card-content_code {
     display: flex;
-    justify-content: center;
     flex-flow: row wrap;
+    margin: 0 55px;
+    justify-content: center;
     gap: 30px;
     .code {
+      margin: 0;
       background-color: #ffffff;
       padding: 20px;
       border-radius: 10px;
-      margin-bottom: 20px;
       animation: content-wrait 0.7s linear;
       overflow: hidden;
     }

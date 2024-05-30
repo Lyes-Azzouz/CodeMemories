@@ -1,10 +1,10 @@
 // Style pour CodeCards.jsx
 .cards_container {
   margin-top: 60px;
-  padding: 10px 70px;
+  padding: 10px 0px 0px 166px;
   display: flex;
-  justify-content: center;
-
+  flex-direction: row;
+  justify-content: left;
   flex-wrap: wrap;
   gap: 50px;
   padding-bottom: 50px;
