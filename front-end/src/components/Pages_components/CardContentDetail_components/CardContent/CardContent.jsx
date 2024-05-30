@@ -16,10 +16,10 @@ import { useEffect } from "react";
  */
 export function CardContent({ title, technos, textAreas, imageUrl }) {
   // Test afin de voir si les données en props sont bien récupérées
-  console.log("Title:", title);
-  console.log("Technos:", technos);
-  console.log("TextAreas:", textAreas);
-  console.log("ImageURL:", imageUrl);
+  // console.log("Title:", title);
+  // console.log("Technos:", technos);
+  // console.log("TextAreas:", textAreas);
+  // console.log("ImageURL:", imageUrl);
 
   useEffect(() => {
     hljs.highlightAll();
@@ -27,13 +27,16 @@ export function CardContent({ title, technos, textAreas, imageUrl }) {
 
   return (
     <div className="card-content_container">
-      <div className="card-content_top-text">
-        <h3>{title}</h3>
+      <div className="top-content">
+        <div className="card-content_top-text">
+          <h3>{title}</h3>
+        </div>
+        <div className="card-content_image">
+          <img src={imageUrl} alt={title} />
+        </div>{" "}
+        <span>{technos && technos.join(", ")} </span>
       </div>
-      <div className="card-content_image">
-        <img src={imageUrl} alt={title} />
-      </div>{" "}
-      <span>{technos && technos.join(", ")} </span>
+
       <div className="card-content_code">
         {textAreas &&
           textAreas.map((text, index) => (
