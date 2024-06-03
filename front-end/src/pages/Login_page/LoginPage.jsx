@@ -23,7 +23,7 @@ export function LoginPage() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        navigate("/"); // Redirige vers la page "d'accueil" si l'utilisateur est connecté
+        navigate("/Mes_codes"); // Redirige vers la page "d'accueil" si l'utilisateur est connecté
       }
     });
 

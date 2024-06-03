@@ -6,7 +6,6 @@ import { CodeCards } from "./CodeCards/CodeCards";
 import { FilterBar } from "../../Globals_components/FilterBar_components/FilterBar";
 import { NewitemButton } from "./NewItem_button_components/NewItemButton";
 import { Modal } from "../../Globals_components/Modal_components/Modal";
-import { ContainerCardContent } from "../CardContentDetail_components/ContainerCardContent";
 // Hooks
 import { useState, useEffect, useContext } from "react";
 // Context

@@ -26,6 +26,7 @@ function App() {
         <NavBar />
         <SideBar tabIsActive={tabIsActive} setTabIsActive={setTabIsActive} />
         <Routes>
+          <Route path="/" element={<MesCodes />} />
           <Route path="/Mes_codes" element={<MesCodes />} />
           <Route path="/Mes_codes/detail" element={<CardContentDetail />} />
           <Route path="/Mes_notes" element={<MesNotes />} />

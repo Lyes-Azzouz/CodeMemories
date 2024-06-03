@@ -5,7 +5,7 @@ import { ButtonsCard } from "../../../Globals_components/ButtonsCard_components/
 // Hooks
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-// Context
+// Custom Hooks
 import { CardsContentSelectContext } from "../../../../context/CardsContentSelectContext";
 
 /**
@@ -24,13 +24,17 @@ export function CodeCards({ data, onDelete, onSelectCard }) {
   const handleOpen = (cardId) => {
     const card = data.find((card) => card.id === cardId);
     setSelectedCard(card);
-    navigate("/Mes_codes/detail");
+    navigate("/Mes_codes/detail"); // Redirige vers la pages "Mes_codes" lorsque l'utilisateur se connecte.
   };
 
   return (
     <div className="cards_container">
-      {data.map((card, index) => (
-        <div className="card" key={index}>
+      {[...data.reverse()].map((card, index) => (
+        <div
+          className="card"
+          key={index}
+          style={{ order: data.length - index }}
+        >
           <div className="content">
             <div className="title_and_image">
               <h3>{card.title}</h3>

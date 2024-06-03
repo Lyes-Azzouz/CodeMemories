@@ -6,18 +6,24 @@ import { GrResources } from "react-icons/gr";
 import { Tabs } from "./Tabs/Tabs.jsx";
 import { Login } from "./login/Login.jsx";
 // Hooks
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 // Style
 import "./sidebar.scss";
 // Parent component : SideBar
 /**
  *
  * @param {String} tabIsActive // Etat initialisé en string vide pour vérifer les Tabs correspondante (Mes codes etc...)
- * @returns
+ * @returns {JSX.Element}
  */
 
 export function SideBar({ tabIsActive, setTabIsActive }) {
+  useEffect(() => {
+    if (location.pathname === "/") {
+      setTabIsActive("Mes codes");
+    }
+  }, [location, setTabIsActive]);
+
   const handleClickTab = (tabName) => {
     setTabIsActive(tabName);
   };
