@@ -4,12 +4,13 @@ import "./container.scss";
 import { Title } from "./Title/Title";
 import { CodeCards } from "./CodeCards/CodeCards";
 import { FilterBar } from "../../Globals_components/FilterBar_components/FilterBar";
-import { NewitemButton } from "./NewItem_button_components/NewItemButton";
+import { NewItemButton } from "../MesCodes_components/NewItem_button_components/NewItemButton";
 import { Modal } from "../../Globals_components/Modal_components/Modal";
 // Hooks
 import { useState, useEffect, useContext } from "react";
 // Context
 import { CardsContentSelectContext } from "../../../context/CardsContentSelectContext";
+import { ModalContext } from "../../../context/ModalContext";
 // Libs
 import { getAuth } from "firebase/auth";
 
@@ -20,10 +21,11 @@ export function Container() {
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [textArea, setTextArea] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { selectedCard, setSelectedCard } = useContext(
     CardsContentSelectContext
   );
+  const { isModalOpen, closeModal, modalProps } = useContext(ModalContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,9 +93,6 @@ export function Container() {
   const handleTextAreaChange = (newTextArea) => setTextArea(newTextArea);
   const handleImageUrlChange = (url) => setImageUrl(url);
   const handleImageFileChange = (file) => setImageFile(file);
-  const handleModalClose = () => setIsModalOpen(false);
-  const handleNewItemClick = () => setIsModalOpen(true);
-
   const handleAddCard = (newCard) => {
     setData((prevData) => [...prevData, newCard]);
   };
@@ -114,7 +113,7 @@ export function Container() {
             <FilterBar />
           </div>
           <div className="add-btn">
-            <NewitemButton onClick={handleNewItemClick} />
+            <NewItemButton />
           </div>
         </div>
       </div>
@@ -126,7 +125,7 @@ export function Container() {
 
       <Modal
         isOpen={isModalOpen}
-        onClose={handleModalClose}
+        onClose={closeModal}
         title={title}
         onTitleChange={handleTitleChange}
         technos={technos}
@@ -140,6 +139,7 @@ export function Container() {
         onAddCard={handleAddCard}
         textAreaValue={textArea}
         onTextAreaChange={handleTextAreaChange}
+        {...modalProps} // Pass additional modal props from context
       />
     </div>
   );

@@ -13,8 +13,9 @@ import { CardContentDetail } from "./pages/CardContentDetail_page/CardContentDet
 import { LoginPage } from "./pages/Login_page/LoginPage.jsx";
 // Hooks
 import { useState } from "react";
-// Custom Hooks
+// Context
 import { CardsContentProvider } from "./context/CardsContentSelectContext.jsx";
+import { ModalProvider } from "./context/ModalContext.jsx";
 // Application
 function App() {
   const [tabIsActive, setTabIsActive] = useState("");
@@ -22,18 +23,20 @@ function App() {
   // Création des routes (router-dom)
   return (
     <CardsContentProvider>
-      <Router>
-        <NavBar />
-        <SideBar tabIsActive={tabIsActive} setTabIsActive={setTabIsActive} />
-        <Routes>
-          <Route path="/" element={<MesCodes />} />
-          <Route path="/Mes_codes" element={<MesCodes />} />
-          <Route path="/Mes_codes/detail" element={<CardContentDetail />} />
-          <Route path="/Mes_notes" element={<MesNotes />} />
-          <Route path="/Ressources" element={<Ressources />} />
-          <Route path="/Login" element={<LoginPage />} />
-        </Routes>
-      </Router>
+      <ModalProvider>
+        <Router>
+          <NavBar />
+          <SideBar tabIsActive={tabIsActive} setTabIsActive={setTabIsActive} />
+          <Routes>
+            <Route path="/" element={<MesCodes />} />
+            <Route path="/Mes_codes" element={<MesCodes />} />
+            <Route path="/Mes_codes/detail" element={<CardContentDetail />} />
+            <Route path="/Mes_notes" element={<MesNotes />} />
+            <Route path="/Ressources" element={<Ressources />} />
+            <Route path="/Login" element={<LoginPage />} />
+          </Routes>
+        </Router>
+      </ModalProvider>
     </CardsContentProvider>
   );
 }

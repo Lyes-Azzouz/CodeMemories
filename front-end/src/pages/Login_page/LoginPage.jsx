@@ -24,6 +24,7 @@ export function LoginPage() {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         navigate("/Mes_codes"); // Redirige vers la page "d'accueil" si l'utilisateur est connecté
+        // A voir si je change...
       }
     });
 
