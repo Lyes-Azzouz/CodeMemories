@@ -13,7 +13,7 @@ export function ContainerCardContent() {
   console.log("Selected Card:", selectedCard); // Ajoutez cette ligne pour vérifier selectedCard
 
   if (!selectedCard) {
-    return <div>Erreur lors de l'affichage des détails de la card</div>;
+    return <div>Erreur lors de l'affichage des détails de la carte</div>;
   }
 
   return (
