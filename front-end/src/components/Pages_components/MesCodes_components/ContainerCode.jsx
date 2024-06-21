@@ -1,106 +1,152 @@
-// Style
-import "./container.scss";
-// Components
-import { Title } from "./Title/Title";
+import { useState, useEffect } from "react";
 import { CodeCards } from "./CodeCards/CodeCards";
-import { FilterBar } from "../../Globals_components/FilterBar_components/FilterBar";
-import { NewItemButton } from "../MesCodes_components/NewItem_button_components/NewItemButton";
 import { Modal } from "../../Globals_components/Modal_components/Modal";
-// Hooks
-import { useState, useEffect, useContext } from "react";
-// Context
-import { CardsContentSelectContext } from "../../../context/CardsContentSelectContext";
-import { ModalContext } from "../../../context/ModalContext";
-// Libs
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { NewItemButton } from "../../Globals_components/NewItem_button_components/NewItemButton";
+import { FilterBar } from "../../Globals_components/FilterBar_components/FilterBar";
+import "../MesCodes_components/container.scss";
+import { Title } from "./Title/Title";
 
-export function Container() {
-  const [data, setData] = useState([]);
+function ContainerCode() {
+  const [cards, setCards] = useState([]);
   const [title, setTitle] = useState("");
-  const [technos, setTechnos] = useState([]);
-  const [imageFile, setImageFile] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
-  const [textArea, setTextArea] = useState([]);
-
-  const { selectedCard, setSelectedCard } = useContext(
-    CardsContentSelectContext
-  );
-  const { isModalOpen, closeModal, modalProps } = useContext(ModalContext);
+  const [newCardTechnos, setNewCardTechnos] = useState([]);
+  const [newCardTextAreas, setNewCardTextAreas] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCards = async () => {
       try {
         const auth = getAuth();
-        const currentUser = auth.currentUser;
-        if (!currentUser) {
-          console.warn("User is not authenticated");
-          return;
-        }
-        const token = await currentUser.getIdToken();
-        const response = await fetch("http://localhost:3000/api/data", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        onAuthStateChanged(auth, async (user) => {
+          if (user) {
+            const token = await user.getIdToken();
+            const response = await fetch(
+              "http://localhost:3000/api/codecards",
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+
+            if (response.ok) {
+              const data = await response.json();
+              setCards(data);
+            } else {
+              console.error("Échec de la récupération des cartes");
+            }
+          } else {
+            console.error("Aucun utilisateur connecté");
+          }
+          setIsLoading(false);
         });
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok " + response.statusText);
-        }
-
-        const data = await response.json();
-        const formattedData = data.map((doc) => ({
-          ...doc,
-          id: doc.id,
-        }));
-        setData(formattedData);
       } catch (error) {
-        console.error("Erreur lors du fetch des données: ", error);
+        console.error("Erreur lors de la récupération des cartes:", error);
+        setIsLoading(false);
       }
     };
 
-    fetchData();
+    fetchCards();
   }, []);
 
-  const handleDelete = async (id) => {
-    try {
-      const auth = getAuth();
-      const currentUser = auth.currentUser;
-      if (!currentUser) {
-        console.warn("User is not authenticated");
-        return;
-      }
-      const token = await currentUser.getIdToken();
-      const response = await fetch(`http://localhost:3000/api/data/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+  const handleTitleChange = (e) => setTitle(e.target.value);
+  const handleTechnosChange = (e) => setNewCardTechnos(e.target.value);
+  const handleTextAreasChange = (e) => setNewCardTextAreas(e.target.value);
 
-      if (response.ok) {
-        console.log("Données supprimées avec succès");
-        setData((prevData) => prevData.filter((card) => card.id !== id));
-      } else {
-        console.error("Erreur lors de la suppression des données");
+  const handleAddCard = async () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (user) {
+      const token = await user.getIdToken();
+      // Transformer technos et textAreas en tableaux si ce n'est pas déjà fait
+      const newTechnos =
+        newCardTechnos.length > 0 ? JSON.parse(newCardTechnos) : [];
+      const newTextAreas =
+        newCardTextAreas.length > 0
+          ? JSON.parse(`["${newCardTextAreas}"]`)
+          : [];
+
+      const newCard = {
+        title,
+        technos: Array.isArray(newTechnos) ? newTechnos : [],
+        textAreas: Array.isArray(newTextAreas) ? newTechnos : [],
+        imageUrl: null, // Définir une valeur par défaut pour imageUrl si nécessaire
+      };
+
+      try {
+        const response = await fetch("http://localhost:3000/api/codecards", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newCard),
+        });
+
+        if (response.ok) {
+          const addedCard = await response.json();
+          console.log("Nouvelle carte ajoutée:", addedCard);
+
+          // Vérifier si la carte ajoutée est valide avant de l'ajouter à cards
+          if (
+            addedCard.id &&
+            addedCard.title &&
+            Array.isArray(addedCard.technos) &&
+            Array.isArray(addedCard.textAreas)
+          ) {
+            setCards([...cards, addedCard]);
+          } else {
+            console.warn("La carte ajoutée n'est pas valide:", addedCard);
+          }
+
+          handleCloseModal();
+        } else {
+          console.error("Échec d'ajout de la carte");
+        }
+      } catch (error) {
+        console.error("Erreur lors de l'ajout de la carte:", error);
       }
-    } catch (error) {
-      console.error("Erreur lors de la suppression des données:", error);
+    } else {
+      console.error("Aucun utilisateur connecté");
     }
   };
 
-  const handleTitleChange = (e) => setTitle(e.target.value);
-  const handleTechnosChange = (newTechnos) => setTechnos(newTechnos);
-  const handleTextAreaChange = (newTextArea) => setTextArea(newTextArea);
-  const handleImageUrlChange = (url) => setImageUrl(url);
-  const handleImageFileChange = (file) => setImageFile(file);
-  const handleAddCard = (newCard) => {
-    setData((prevData) => [...prevData, newCard]);
+  const handleDeleteCard = async (cardId) => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (user) {
+      const token = await user.getIdToken();
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/codecards/${cardId}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          setCards(cards.filter((card) => card.id !== cardId));
+        } else {
+          console.error("Échec de suppression de la carte");
+        }
+      } catch (error) {
+        console.error("Erreur lors de la suppression de la carte:", error);
+      }
+    } else {
+      console.error("Aucun utilisateur connecté");
+    }
   };
 
-  const handleSelectCard = (card) => {
-    console.log("card selected : ", card);
-    setSelectedCard(card);
-  };
+  if (isLoading) {
+    return <div>Chargement...</div>;
+  }
 
   return (
     <div className="container">
@@ -113,34 +159,28 @@ export function Container() {
             <FilterBar />
           </div>
           <div className="add-btn">
-            <NewItemButton />
+            <NewItemButton onClick={handleOpenModal} />
           </div>
         </div>
       </div>
-      <CodeCards
-        data={data}
-        onDelete={handleDelete}
-        onSelectCard={handleSelectCard}
-      />
+
+      <CodeCards codecards={cards} onDelete={handleDeleteCard} />
 
       <Modal
         isOpen={isModalOpen}
-        onClose={closeModal}
         title={title}
         onTitleChange={handleTitleChange}
-        technos={technos}
+        technos={newCardTechnos}
         onTechnosChange={handleTechnosChange}
-        imageFile={imageFile}
-        onImageFileChange={handleImageFileChange}
-        imageUrl={imageUrl}
-        onImageUrlChange={handleImageUrlChange}
-        showImageInput={true}
-        showLangageInput={true}
+        textAreaValue={newCardTextAreas}
+        onTextAreaChange={handleTextAreasChange}
+        onClose={handleCloseModal}
         onAddCard={handleAddCard}
-        textAreaValue={textArea}
-        onTextAreaChange={handleTextAreaChange}
-        {...modalProps} // Pass additional modal props from context
+        showImageInput={true}
+        containerType="ContainerCode"
       />
     </div>
   );
 }
+
+export default ContainerCode;

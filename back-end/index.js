@@ -1,5 +1,5 @@
+// Import des bibliothèques nécessaires
 require("dotenv").config(); // Charger les variables d'environnement depuis le fichier .env
-
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -41,7 +41,7 @@ firebase.initializeApp({
 // Configuration de multer pour le stockage des fichiers en mémoire
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-const bucket = admin.storage().bucket(); // Initialisation du bucket de stockage Firebase
+const bucket = admin.storage().bucket(process.env.FIREBASE_STORAGE_BUCKET); // Initialisation du bucket de stockage Firebase
 
 // Import de la logique de sécurité via Jwt
 const verifyToken = require("./jwt/verifyToken");
@@ -87,19 +87,19 @@ app.post("/logout", async (req, res) => {
 
 // Route pour afficher une page d'accueil
 app.get("/", (req, res) => {
-  res.send("salut");
+  res.send("Salut");
 });
 
-// Route pour envoyer des données à Firebase
-// Route pour envoyer des données à Firebase
+// Routes pour CodeCards
+// Route pour créer une nouvelle carte
 app.post(
-  "/api/data",
+  "/api/codecards",
   verifyToken,
   upload.single("imageFile"),
   async (req, res) => {
     console.log("Données reçues du client:", req.body);
     try {
-      const { title, technos, textAreas } = Object.assign({}, req.body);
+      const { title, technos, textAreas } = req.body;
       const userId = req.user ? req.user.uid : null;
 
       // Vérification et parsing du champ technos
@@ -182,15 +182,17 @@ app.post(
       }
     } catch (error) {
       console.error("Erreur lors de l'envoi des données: ", error.message);
-      res.status(500).json({
-        error: "Erreur lors de l'envoi des données: " + error.message,
-      });
+      res
+        .status(500)
+        .json({
+          error: "Erreur lors de l'envoi des données: " + error.message,
+        });
     }
   }
 );
 
-// Route pour récupérer les données de Firebase associées à l'utilisateur
-app.get("/api/data", verifyToken, async (req, res) => {
+// Route pour récupérer les données de Firebase associées à l'utilisateur (CodeCards)
+app.get("/api/codecards", verifyToken, async (req, res) => {
   const userId = req.user ? req.user.uid : null;
 
   try {
@@ -210,7 +212,7 @@ app.get("/api/data", verifyToken, async (req, res) => {
 });
 
 // Route pour supprimer une carte par ID (en vérifiant si elle appartient à l'utilisateur)
-app.delete("/api/data/:id", verifyToken, async (req, res) => {
+app.delete("/api/codecards/:id", verifyToken, async (req, res) => {
   const userId = req.user ? req.user.uid : null; // Récupérer l'ID de l'utilisateur à partir de Firebase Authentication
   const { id } = req.params;
 
@@ -239,7 +241,156 @@ app.delete("/api/data/:id", verifyToken, async (req, res) => {
   }
 });
 
-// Écoute du serveur sur le port défini
+// Routes pour NoteCards
+// Route pour créer une nouvelle note
+app.post(
+  "/api/notescards",
+  verifyToken,
+  upload.single("imageFile"),
+  async (req, res) => {
+    console.log("Données reçues du client:", req.body);
+    try {
+      const { title, subtitles, textAreas } = req.body;
+
+      // Vérification et parsing du champ subtitles
+      let subtitlesArray;
+      try {
+        subtitlesArray = JSON.parse(subtitles);
+      } catch (err) {
+        throw new Error(
+          "Le champ 'subtitles' doit être un tableau ou une chaîne JSON valide"
+        );
+      }
+
+      if (!Array.isArray(subtitlesArray)) {
+        throw new Error("Le champ 'subtitles' doit être un tableau");
+      }
+
+      // Vérification et parsing du champ textAreas
+      let textAreasArray;
+      try {
+        textAreasArray = JSON.parse(textAreas);
+      } catch (err) {
+        throw new Error(
+          "Le champ 'textAreas' doit être un tableau ou une chaîne JSON valide"
+        );
+      }
+
+      if (!Array.isArray(textAreasArray)) {
+        throw new Error("Le champ 'textAreas' doit être un tableau");
+      }
+
+      let imageUrl = null;
+      if (req.file) {
+        // Code pour l'upload de l'image
+        const blob = bucket.file(Date.now() + "-" + req.file.originalname);
+        const blobStream = blob.createWriteStream({
+          metadata: {
+            contentType: req.file.mimetype,
+          },
+        });
+
+        blobStream.on("error", (err) => {
+          console.error("Erreur lors de l'upload de l'image:", err);
+          res.status(500).json({ error: "Erreur lors de l'upload de l'image" });
+        });
+
+        blobStream.on("finish", async () => {
+          imageUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+
+          // Création de la nouvelle note avec l'ID de l'utilisateur
+          const userId = req.user ? req.user.uid : null;
+          const newNote = {
+            title,
+            subtitles: subtitlesArray,
+            textAreas: textAreasArray,
+            imageUrl,
+            userId,
+          };
+
+          // Enregistrement de la nouvelle note dans Firestore
+          await admin.firestore().collection("notes").add(newNote);
+
+          res.status(201).send("Donnée envoyée !");
+        });
+
+        blobStream.end(req.file.buffer);
+      } else {
+        // Création de la nouvelle note avec l'ID de l'utilisateur
+        const userId = req.user ? req.user.uid : null;
+        const newNote = {
+          title,
+          subtitles: subtitlesArray,
+          textAreas: textAreasArray,
+          imageUrl,
+          userId,
+        };
+
+        // Enregistrement de la nouvelle note dans Firestore
+        await admin.firestore().collection("notes").add(newNote);
+
+        res.status(201).send("Donnée envoyée !");
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'envoi des données:", error.message);
+      res.status(500).json({
+        error: "Erreur lors de l'envoi des données: " + error.message,
+      });
+    }
+  }
+);
+
+// Route pour récupérer les données de Firebase associées à l'utilisateur (NoteCards)
+app.get("/api/notescards", verifyToken, async (req, res) => {
+  const userId = req.user ? req.user.uid : null;
+
+  try {
+    // Récupérer les données associées à l'utilisateur depuis Firestore
+    const snapshot = await admin
+      .firestore()
+      .collection("notes")
+      .where("userId", "==", userId)
+      .get();
+    const data = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+
+    res.json(data);
+  } catch (error) {
+    console.error("Erreur de récupération des données: ", error);
+    res.status(500).json({ error: "Erreur de récupération des données" });
+  }
+});
+
+// Route pour supprimer une note par ID (en vérifiant si elle appartient à l'utilisateur)
+app.delete("/api/notescards/:id", verifyToken, async (req, res) => {
+  const userId = req.user ? req.user.uid : null; // Récupérer l'ID de l'utilisateur à partir de Firebase Authentication
+  const { id } = req.params;
+
+  try {
+    // Vérifier si la note appartient à l'utilisateur
+    const noteRef = admin.firestore().collection("notes").doc(id);
+    const note = await noteRef.get();
+    if (!note.exists) {
+      return res.status(404).send("Note non trouvée");
+    }
+    if (note.data().userId !== userId) {
+      return res
+        .status(403)
+        .send("Vous n'êtes pas autorisé à supprimer cette note");
+    }
+
+    // Supprimer la note de Firestore
+    await noteRef.delete();
+
+    res.status(200).send("Donnée supprimée avec succès !");
+  } catch (error) {
+    console.error("Erreur lors de la suppression des données: ", error);
+    res.status(500).json({
+      error: "Erreur lors de la suppression des données: " + error.message,
+    });
+  }
+});
+
+// Démarrer le serveur et écouter les connexions sur le port spécifié
 app.listen(port, () => {
-  console.log(`Ecoute sur : http://localhost:${port}`);
+  console.log(`Serveur démarré sur le port ${port}`);
 });

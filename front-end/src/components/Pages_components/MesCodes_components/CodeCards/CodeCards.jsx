@@ -1,39 +1,45 @@
-// CodeCards.js
-import "./codecards.scss";
-// Components
+// Import des bibliothèques et des composants nécessaires
 import { ButtonsCard } from "../../../Globals_components/ButtonsCard_components/ButtonsCard";
-// Hooks
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-// Custom Hooks
 import { CardsContentSelectContext } from "../../../../context/CardsContentSelectContext";
-
+import "./codecards.scss";
 /**
  * Composant CodeCards
  * @param {Object} props - Les propriétés passées au composant.
- * @param {Array} props.data - Les données des card à afficher.
+ * @param {Array} props.codecards - Les données des card à afficher.
  * @param {Function} props.onDelete - La fonction de suppression d'une card.
  * @param {Function} props.onSelectCard - La fonction de sélection d'une card.
  */
-export function CodeCards({ data, onDelete, onSelectCard }) {
+export function CodeCards({ codecards = [], onDelete, onSelectCard }) {
+  // Valeur par défaut pour codecards
   const navigate = useNavigate();
   const { setSelectedCard } = useContext(CardsContentSelectContext);
 
-  console.log("Data received:", data);
+  console.log("Données reçues:", codecards);
 
   const handleOpen = (cardId) => {
-    const card = data.find((card) => card.id === cardId);
-    setSelectedCard(card);
-    navigate("/Mes_codes/detail"); // Redirige vers la pages "Mes_codes" lorsque l'utilisateur se connecte.
+    const card = codecards.find((card) => card.id === cardId);
+    if (card) {
+      setSelectedCard(card);
+      navigate("/Mes_codes/detail");
+    } else {
+      console.error("Carte non trouvée:", cardId);
+    }
   };
+
+  if (!Array.isArray(codecards)) {
+    console.error("codecards n'est pas un tableau:", codecards);
+    return <div>Erreur: codecards n'est pas un tableau</div>;
+  }
 
   return (
     <div className="cards_container">
-      {[...data.reverse()].map((card, index) => (
+      {[...codecards].reverse().map((card, index) => (
         <div
           className="card"
           key={index}
-          style={{ order: data.length - index }}
+          style={{ order: codecards.length - index }}
         >
           <div className="content">
             <div className="title_and_image">
@@ -43,7 +49,7 @@ export function CodeCards({ data, onDelete, onSelectCard }) {
                 <ButtonsCard
                   cardId={card.id}
                   onDelete={onDelete}
-                  onOpen={handleOpen} // Passe handleOpen à ButtonsCard pour le bouton "Ouvrir"
+                  onOpen={() => handleOpen(card.id)}
                 />
               </div>
             </div>
