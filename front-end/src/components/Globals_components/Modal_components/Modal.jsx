@@ -180,26 +180,40 @@ export function Modal({
           </span>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={title}
-            onChange={onTitleChange}
-            placeholder="Titre de la carte"
-            className="modal-input"
-          />
-
-          {showImageInput && (
+        <form onSubmit={handleSubmit} className="modal-form">
+          <div className="modal-top-content">
             <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="modal-input"
+              type="text"
+              value={title}
+              onChange={onTitleChange}
+              placeholder="Titre de la carte"
+              className="modal-title"
             />
-          )}
+
+            {showImageInput && (
+              <div className="modal-select-img">
+                <label htmlFor="imageUpload" className="select-img-text">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    id="imageUpload"
+                    className="input-image"
+                  />
+                </label>
+              </div>
+            )}
+          </div>
 
           {textAreas.map((textArea) => (
             <div key={textArea.id} className="modal-textarea-container">
+              <button
+                type="button"
+                onClick={() => removeTextArea(textArea.id)}
+                className="remove-textarea"
+              >
+                <IoCloseSharp />
+              </button>
               {containerType === "ContainerCode" ? (
                 <input
                   type="text"
@@ -221,23 +235,14 @@ export function Modal({
                   className="modal-input"
                 />
               )}
-
               <textarea
                 value={textArea.value}
                 onChange={(e) =>
                   handleTextAreaChange(textArea.id, e.target.value)
                 }
-                placeholder="Contenu de la carte"
-                className="modal-textarea"
+                placeholder="Ajouter le code à sauvegarder ici"
+                className="modal-text-area"
               ></textarea>
-
-              <button
-                type="button"
-                onClick={() => removeTextArea(textArea.id)}
-                className="remove-textarea"
-              >
-                <IoCloseSharp />
-              </button>
             </div>
           ))}
 

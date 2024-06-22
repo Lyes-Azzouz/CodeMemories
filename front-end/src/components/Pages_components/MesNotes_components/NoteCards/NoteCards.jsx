@@ -1,34 +1,76 @@
 import React from "react";
 import PropTypes from "prop-types";
-// Style
+import { ButtonsCard } from "../../../Globals_components/ButtonsCard_components/ButtonsCard";
 import "./notes-array__style.scss";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { CardsContentSelectContext } from "../../../../context/CardsContentSelectContext";
 
 /**
  * Composant NotesCard
  * @param {Object} props - Les propriétés passées au composant.
- * @param {string} props.title - Le titre de la carte.
- * @param {Array} props.textAreas - Les zones de texte de la carte.
- * @param {Array} props.subtitles - Les sous-titres des zones de texte.
- * @returns {JSX.Element} Le composant NotesCard.
+ * @param {Array} props.notescards - Les données des cartes à afficher.
+ * @param {Function} props.onDelete - La fonction de suppression d'une carte.
+ * @param {Function} props.onSelectCard - La fonction de sélection d'une carte.
  */
-function NotesCard({ title, textAreas, subtitles }) {
+export function NotesCards({ notescards = [], onDelete, onSelectCard }) {
+  const navigate = useNavigate();
+  const { setSelectedCard } = useContext(CardsContentSelectContext);
+
+  console.log("Données reçues:", notescards);
+  console.log("setSelectedCard:", setSelectedCard); // Ajout de log pour vérifier le contexte
+
+  const handleOpen = (cardId) => {
+    console.log("handleOpen called with cardId:", cardId);
+    const card = notescards.find((card) => card.id === cardId);
+    if (card) {
+      console.log("Carte trouvée:", card);
+      setSelectedCard(card);
+      navigate("/Mes_notes/detail");
+    } else {
+      console.error("Carte non trouvée:", cardId);
+    }
+  };
+
+  if (!Array.isArray(notescards)) {
+    console.error("notescards n'est pas un tableau:", notescards);
+    return <div>Erreur: notescards n'est pas un tableau</div>;
+  }
+
   return (
-    <div className="notes-card">
-      <h3>{title}</h3>
-      {textAreas.map((text, index) => (
-        <div key={index} className="notes-card-textarea">
-          <h4>{subtitles[index]}</h4>
-          <p>{text}</p>
-        </div>
-      ))}
+    <div className="cards_container">
+      {notescards
+        .slice()
+        .reverse()
+        .map((card, index) => (
+          <div
+            className="notes-card"
+            key={index}
+            style={{ order: notescards.length - index }}
+          >
+            <div className="notes-card-elements">
+              <div className="top-contain-notes">
+                <h3>{card.title}</h3>
+                <div className="buttons">
+                  <ButtonsCard
+                    cardId={card.id}
+                    onDelete={onDelete}
+                    onOpen={() => handleOpen(card.id)}
+                  />
+                </div>
+              </div>
+              <div className="bottom-contain-notes">
+                {card.subtitles.map((subtitle, i) => (
+                  <div key={i}>
+                    <h4>{subtitle}</h4>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
     </div>
   );
 }
 
-NotesCard.propTypes = {
-  title: PropTypes.string.isRequired,
-  textAreas: PropTypes.arrayOf(PropTypes.string).isRequired,
-  subtitles: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
-
-export default NotesCard;
+export default NotesCards;

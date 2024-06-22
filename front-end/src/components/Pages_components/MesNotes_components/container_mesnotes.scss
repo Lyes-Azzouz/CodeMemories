@@ -8,22 +8,16 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  .title-notes {
+  .top-content-notes {
     display: flex;
     align-items: center;
-    justify-content: center;
-    h1 {
-      font-weight: 500;
-      font-size: 3em;
+    justify-content: space-between;
+    margin: 0 100px 0 100px;
+    .right-elements {
+      display: flex;
+      align-items: center;
+      gap: 30px;
     }
-  }
-  .right-content_notes {
-    display: flex;
-    justify-content: right;
-    align-items: center;
-    gap: 30px;
-    margin-right: 50px;
-    margin-bottom: 100px;
   }
 }
 

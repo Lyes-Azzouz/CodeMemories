@@ -18,16 +18,22 @@ export function ButtonsCard({ cardId, onDelete, onOpen }) {
     <div className="btn-card__container">
       {/* Bouton de suppression */}
       <button id="btn-1" title="Supprimer" onClick={() => onDelete(cardId)}>
-        <RiDeleteBin6Fill />
+        <div className="btn-icon">
+          <RiDeleteBin6Fill />
+        </div>
       </button>
       {/* Bouton d'ouverture (Doit rediriger vers une autre page.) */}
       <button id="btn-2" title="Ouvrir" onClick={() => onOpen(cardId)}>
-        <MdOpenInNew />
+        <div className="btn-icon">
+          <MdOpenInNew />
+        </div>
       </button>
 
       {/* Bouton de modification */}
       <button id="btn-3" title="Modifier">
-        <BiSolidMessageSquareEdit />
+        <div className="btn-icon">
+          <BiSolidMessageSquareEdit />
+        </div>
       </button>
     </div>
   );

@@ -5,6 +5,7 @@ import { getAuth } from "firebase/auth";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { NewItemButton } from "../../Globals_components/NewItem_button_components/NewItemButton";
 import { FilterBar } from "../../Globals_components/FilterBar_components/FilterBar";
+import { Title } from "./Title/Title";
 import "./container_mesnotes.scss";
 
 function ContainerNotes() {
@@ -84,20 +85,22 @@ function ContainerNotes() {
   };
 
   return (
-    <div className="notes">
-      <FilterBar />
-      <div className="notes__container">
-        {cards.map((card) => (
-          <NotesCard
-            key={card.id}
-            id={card.id}
-            title={card.title}
-            subtitles={card.subtitles}
-            textAreas={card.textAreas}
-            onDelete={() => handleDeleteCard(card.id)}
-          />
-        ))}
-        <NewItemButton onClick={handleOpenModal} />
+    <div className="container-notes">
+      <div className="top-content-notes">
+        <Title />
+        <div className="right-elements">
+          <NewItemButton onClick={handleOpenModal} />
+          <FilterBar />
+        </div>
+      </div>
+
+      <div className="notes__container-content">
+        <NotesCard
+          notescards={cards}
+          onDelete={handleDeleteCard}
+          onSelectCard={(card) => console.log("Card selected:", card)}
+        />
+
         <Modal
           isOpen={isModalOpen}
           title={title}
