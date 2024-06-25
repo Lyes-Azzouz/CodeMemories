@@ -5,21 +5,32 @@ import { GiMove } from "react-icons/gi";
 import { v4 as uuidv4 } from "uuid";
 import { getAuth } from "firebase/auth";
 
+/**
+ * Composant Modal pour l'ajout de cartes.
+ * @param {boolean} isOpen - Détermine si le modal est ouvert ou fermé.
+ * @param {string} title - Titre de la carte à ajouter.
+ * @param {function} onTitleChange - Fonction de gestion du changement de titre.
+ * @param {function} onClose - Fonction pour fermer le modal.
+ * @param {function} onAddCard - Fonction pour ajouter la carte.
+ * @param {boolean} showImageInput - Indique si l'input pour l'image doit être affiché.
+ * @param {string} textAreaValue - Valeur des zones de texte.
+ * @param {function} onTextAreaChange - Fonction de gestion du changement dans les zones de texte.
+ * @param {string} technos - Technologies liées à la carte.
+ * @param {function} onTechnosChange - Fonction de gestion du changement des technologies.
+ * @param {File} imageFile - Fichier image sélectionné.
+ * @param {function} onImageFileChange - Fonction de gestion du changement de l'image.
+ * @param {string} containerType - Type de container pour déterminer l'URL de l'API.
+ * @param {array} subtitles - Sous-titres pour les textAreas.
+ */
 export function Modal({
   isOpen,
   title,
   onTitleChange,
   onClose,
-  onAddCard,
   showImageInput,
-  textAreaValue,
-  onTextAreaChange,
-  technos,
-  onTechnosChange,
-  imageFile,
-  onImageFileChange,
   containerType,
-  subtitles,
+  fetchCards,
+  fetchCardsNotes,
 }) {
   const [isDragging, setIsDragging] = useState(false);
   const [textAreas, setTextAreas] = useState([
@@ -33,9 +44,11 @@ export function Modal({
   const modalRef = useRef(null);
   const [selectedImageFile, setSelectedImageFile] = useState(null);
 
+  // Fonction pour soumettre le formulaire et ajouter la card
   const handleSubmit = async (e) => {
     e.preventDefault();
     const cardId = uuidv4();
+    // Formdata , à voir si je test avec l'ajout des catégories
     const formData = new FormData();
     formData.append("id", cardId);
     formData.append("title", title);
@@ -53,10 +66,11 @@ export function Modal({
     }
 
     try {
-      // Changement d'URL pour chaque container différent.
       let url = "";
       const auth = getAuth();
       const token = await auth.currentUser.getIdToken();
+
+      // Sélection de l'URL en fonction du type de container (api/ressourcescards à ajouter lorsque le Container pour les ressources sera coder)
       if (containerType === "ContainerCode") {
         url = "http://localhost:3000/api/codecards";
       } else if (containerType === "ContainerNotes") {
@@ -72,29 +86,39 @@ export function Modal({
       });
 
       if (response.ok) {
+        // Ferme la modal
         onClose();
+        if (containerType == "ContainerCode") {
+          await fetchCards();
+        } else if (containerType == "ContainerNotes") {
+          await fetchCardsNotes();
+        }
       } else {
-        console.error("Error sending data");
+        console.error("Erreur d'envoie des données");
       }
     } catch (error) {
-      console.error("Error sending data:", error);
+      console.error("Erreur d'envoie des données:", error);
     }
   };
 
+  // Fonction pour gérer le début du déplacement du modal
   const handleMouseDown = (e) => {
     const modalRect = modalRef.current.getBoundingClientRect();
     setOffset({ x: e.clientX - modalRect.left, y: e.clientY - modalRect.top });
     setIsDragging(true);
   };
 
+  // Fonction pour gérer le déplacement du modal en cours
   const handleMouseMove = (e) => {
     if (isDragging) {
       setPosition({ x: e.clientX - offset.x, y: e.clientY - offset.y });
     }
   };
 
+  // Fonction pour gérer la fin du déplacement du modal
   const handleMouseUp = () => setIsDragging(false);
 
+  // Effet pour écouter le déplacement de la souris lors du déplacement du modal
   useEffect(() => {
     const mouseMoveListener = (e) => handleMouseMove(e);
     const mouseUpListener = () => handleMouseUp();
@@ -113,8 +137,10 @@ export function Modal({
     };
   }, [isDragging, offset]);
 
+  // Si le modal n'est pas ouvert, ne rien afficher
   if (!isOpen) return null;
 
+  // Fonction pour ajouter une nouvelle zone de texte
   const addNewTextArea = () => {
     setTextAreas([
       ...textAreas,
@@ -122,10 +148,12 @@ export function Modal({
     ]);
   };
 
+  // Fonction pour supprimer une zone de texte spécifique
   const removeTextArea = (id) => {
     setTextAreas(textAreas.filter((textArea) => textArea.id !== id));
   };
 
+  // Fonction pour gérer le changement de valeur dans une zone de texte spécifique
   const handleTextAreaChange = (id, value) => {
     setTextAreas((prev) =>
       prev.map((textArea) =>
@@ -134,6 +162,7 @@ export function Modal({
     );
   };
 
+  // Fonction pour gérer le changement de langage dans une zone de texte spécifique
   const handleLanguageChange = (id, language) => {
     setTextAreas((prev) =>
       prev.map((textArea) =>
@@ -142,6 +171,7 @@ export function Modal({
     );
   };
 
+  // Fonction pour gérer le changement de sous-titre dans une zone de texte spécifique
   const handleSubtitleChange = (id, subtitle) => {
     setTextAreas((prev) =>
       prev.map((textArea) =>
@@ -150,11 +180,13 @@ export function Modal({
     );
   };
 
+  // Fonction pour gérer le changement d'image sélectionnée
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setSelectedImageFile(file);
   };
 
+  // Rendu du composant Modal avec les éléments du formulaire
   return (
     <div className="modal">
       <div
@@ -166,6 +198,7 @@ export function Modal({
           position: "fixed",
         }}
       >
+        {/* Boutons de contrôle du modal */}
         <div className="modal-buttons">
           <span className="close" onClick={onClose}>
             <IoCloseSharp />
@@ -180,8 +213,10 @@ export function Modal({
           </span>
         </div>
 
+        {/* Formulaire pour ajouter une carte */}
         <form onSubmit={handleSubmit} className="modal-form">
           <div className="modal-top-content">
+            {/* Champ de saisie du titre */}
             <input
               type="text"
               value={title}
@@ -190,6 +225,7 @@ export function Modal({
               className="modal-title"
             />
 
+            {/* Sélection d'image, si activé */}
             {showImageInput && (
               <div className="modal-select-img">
                 <label htmlFor="imageUpload" className="select-img-text">
@@ -205,8 +241,10 @@ export function Modal({
             )}
           </div>
 
+          {/* Zones de texte dynamiques */}
           {textAreas.map((textArea) => (
             <div key={textArea.id} className="modal-textarea-container">
+              {/* Bouton pour supprimer une zone de texte */}
               <button
                 type="button"
                 onClick={() => removeTextArea(textArea.id)}
@@ -214,6 +252,7 @@ export function Modal({
               >
                 <IoCloseSharp />
               </button>
+              {/* Champ de saisie pour le langage ou le sous-titre */}
               {containerType === "ContainerCode" ? (
                 <input
                   type="text"
@@ -235,17 +274,19 @@ export function Modal({
                   className="modal-input"
                 />
               )}
+              {/* Zone de texte pour le contenu de la carte */}
               <textarea
                 value={textArea.value}
                 onChange={(e) =>
                   handleTextAreaChange(textArea.id, e.target.value)
                 }
-                placeholder="Ajouter le code à sauvegarder ici"
+                placeholder="Ajouter le contenu ici"
                 className="modal-text-area"
               ></textarea>
             </div>
           ))}
 
+          {/* Bouton pour ajouter une nouvelle zone de texte */}
           <button
             type="button"
             onClick={addNewTextArea}
@@ -254,6 +295,7 @@ export function Modal({
             <IoAddOutline />
           </button>
 
+          {/* Bouton pour soumettre le formulaire */}
           <button type="submit" className="modal-submit">
             Ajouter la carte
           </button>

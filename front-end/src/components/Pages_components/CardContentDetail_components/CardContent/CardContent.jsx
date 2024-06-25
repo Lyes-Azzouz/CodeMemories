@@ -2,7 +2,7 @@
 import "./card-content__style.scss";
 // Libs
 import hljs from "highlight.js";
-import "highlight.js/styles/github.css";
+import "highlight.js/styles/atom-one-dark.css";
 import { useEffect } from "react";
 
 /**

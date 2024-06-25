@@ -15,39 +15,31 @@ function ContainerCode() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        const auth = getAuth();
-        onAuthStateChanged(auth, async (user) => {
-          if (user) {
-            const token = await user.getIdToken();
-            const response = await fetch(
-              "http://localhost:3000/api/codecards",
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
+  const fetchCards = async () => {
+    const auth = getAuth();
 
-            if (response.ok) {
-              const data = await response.json();
-              setCards(data);
-            } else {
-              console.error("Échec de la récupération des cartes");
-            }
-          } else {
-            console.error("Aucun utilisateur connecté");
-          }
-          setIsLoading(false);
-        });
-      } catch (error) {
-        console.error("Erreur lors de la récupération des cartes:", error);
-        setIsLoading(false);
+    try {
+      const token = await auth.currentUser.getIdToken();
+      const response = await fetch("http://localhost:3000/api/codecards", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setCards(data);
+      } else {
+        console.error("Échec de récupération des cards");
       }
-    };
+    } catch (error) {
+      console.error("Erreur de récupération des cards:", error);
+    }
 
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
     fetchCards();
   }, []);
 
@@ -178,6 +170,7 @@ function ContainerCode() {
         onAddCard={handleAddCard}
         showImageInput={true}
         containerType="ContainerCode"
+        fetchCards={fetchCards}
       />
     </div>
   );
