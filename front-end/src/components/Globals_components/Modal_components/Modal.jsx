@@ -229,6 +229,7 @@ export function Modal({
             {showImageInput && (
               <div className="modal-select-img">
                 <label htmlFor="imageUpload" className="select-img-text">
+                  {/* <span>Ajoutez une image</span> */}
                   <input
                     type="file"
                     accept="image/*"
@@ -296,7 +297,7 @@ export function Modal({
           </button>
 
           {/* Bouton pour soumettre le formulaire */}
-          <button type="submit" className="modal-submit">
+          <button type="submit" className="modal-btn-submit">
             Ajouter la carte
           </button>
         </form>
