@@ -61,8 +61,13 @@ export function Modal({
     formData.append("subtitles", JSON.stringify(subtitles));
     formData.append("textAreas", JSON.stringify(values));
 
-    if (selectedImageFile) {
+    if (selectedImageFile && containerType == "ContainerCode") {
       formData.append("imageFile", selectedImageFile);
+    }
+
+    if (containerType == "ContainerNotes") {
+      formData.delete("imageFile", selectedImageFile);
+      formData.delete("technos", JSON.stringify(languages));
     }
 
     try {
@@ -240,6 +245,13 @@ export function Modal({
                 </label>
               </div>
             )}
+          </div>
+
+          <div className="modal-category-content">
+            <span className="category-title">Catégorie</span>
+            <select name="category">
+              <option value="Aucune">Aucune</option>
+            </select>
           </div>
 
           {/* Zones de texte dynamiques */}

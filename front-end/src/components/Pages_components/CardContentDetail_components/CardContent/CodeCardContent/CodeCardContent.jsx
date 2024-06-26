@@ -14,7 +14,7 @@ import { useEffect } from "react";
  * @param {Array} props.textAreas - Les zone de texte à afficher
  * @param {string} props.imageUrl - L'URL de l'image à afficher
  */
-export function CardContent({ title, technos, textAreas, imageUrl }) {
+export function CodeCardContent({ title, technos, textAreas, imageUrl }) {
   // Test afin de voir si les données en props sont bien récupérées
   // console.log("Title:", title);
   // console.log("Technos:", technos);
@@ -31,10 +31,12 @@ export function CardContent({ title, technos, textAreas, imageUrl }) {
         <div className="card-content_top-text">
           <h3>{title}</h3>
         </div>
+
         <div className="card-content_image">
           <img src={imageUrl} alt={title} />
-        </div>{" "}
-        <span>{technos && technos.join(", ")} </span>
+        </div>
+
+        <span>{technos}</span>
       </div>
 
       <div className="card-content_code">

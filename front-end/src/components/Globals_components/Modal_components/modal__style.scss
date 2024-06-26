@@ -78,6 +78,33 @@
           }
         }
       }
+
+      .modal-category-content {
+        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        align-items: center;
+        border-radius: 3px;
+        background-color: #bcd2fc;
+
+        .category-title {
+          font-size: 0.75em;
+          padding-top: 4px;
+        }
+        select {
+          border: 1px solid black;
+          border-radius: 3px;
+          background-color: #22506c;
+          color: #fff;
+          padding: 3px;
+          height: 28px;
+          option {
+            background-color: #fff;
+            color: black;
+          }
+        }
+      }
       .modal-textarea-container {
         display: flex;
         flex-direction: column;

@@ -1,7 +1,7 @@
-// Style
 import "./container-card-content__style.scss";
 // Components
-import { CardContent } from "./CardContent/CardContent";
+import { CodeCardContent } from "./CardContent/CodeCardContent/CodeCardContent";
+import { NotesCardContent } from "./CardContent/NotesCardContent/NotesCardContent";
 // Hooks
 import { useContext } from "react";
 // Context
@@ -10,7 +10,7 @@ import { CardsContentSelectContext } from "../../../context/CardsContentSelectCo
 export function ContainerCardContent() {
   const { selectedCard } = useContext(CardsContentSelectContext);
 
-  console.log("Selected Card:", selectedCard); // Ajoutez cette ligne pour vérifier selectedCard
+  console.log("Selected Card:", selectedCard);
 
   if (!selectedCard) {
     return <div>Erreur lors de l'affichage des détails de la carte</div>;
@@ -18,12 +18,23 @@ export function ContainerCardContent() {
 
   return (
     <div className="container-card-content">
-      <CardContent
-        title={selectedCard.title}
-        technos={selectedCard.technos}
-        imageUrl={selectedCard.imageUrl}
-        textAreas={selectedCard.textAreas}
-      />
+      {selectedCard.type === "code" ? (
+        <CodeCardContent
+          title={selectedCard.title}
+          technos={selectedCard.technos}
+          imageUrl={selectedCard.imageUrl}
+          subtitles={selectedCard.subtitles}
+          textAreas={selectedCard.textAreas}
+        />
+      ) : selectedCard.type === "notes" ? (
+        <NotesCardContent
+          title={selectedCard.title}
+          subtitles={selectedCard.subtitles}
+          textAreas={selectedCard.textAreas}
+        />
+      ) : (
+        <div> Ici mettre RessourceCardContent </div>
+      )}
     </div>
   );
 }
