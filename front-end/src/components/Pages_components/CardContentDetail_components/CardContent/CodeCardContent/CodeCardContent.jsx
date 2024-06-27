@@ -36,7 +36,7 @@ export function CodeCardContent({ title, technos, textAreas, imageUrl }) {
           <img src={imageUrl} alt={title} />
         </div>
 
-        <span>{technos}</span>
+        <span>{technos && technos.join(" - ")}</span>
       </div>
 
       <div className="card-content_code">

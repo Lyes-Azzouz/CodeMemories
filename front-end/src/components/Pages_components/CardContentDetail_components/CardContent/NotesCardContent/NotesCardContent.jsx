@@ -1,5 +1,5 @@
 // Style
-
+import "./notes-card-content_style.scss";
 // Libs
 import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-dark.css";
@@ -37,16 +37,12 @@ export function NotesCardContent({
         <div className="notes-content_top-text">
           <h3>{title}</h3>
         </div>
-        <span>{subtitles && subtitles.join(", ")} </span>
+        <span>{subtitles && subtitles.join(" - ")} </span>
       </div>
 
-      <div className="notes-content_code">
+      <div className="notes-content_text">
         {textAreas &&
-          textAreas.map((text, index) => (
-            <pre key={index}>
-              <code className="notes">{text} </code>
-            </pre>
-          ))}
+          textAreas.map((text, index) => <p className="notes">{text} </p>)}
       </div>
     </div>
   );

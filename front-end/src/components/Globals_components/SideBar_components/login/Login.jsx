@@ -44,9 +44,9 @@ export function Login() {
     <div className="login-container">
       {/* Bouton de déconnexion si l'utilisateur est connecté */}
       {isLoggedIn ? (
-        <span className="login-icon" onClick={handleLogout}>
+        <span className="login-icon-deconnecte" onClick={handleLogout}>
           <CiLogout />
-          <span className="login-text">Se déconnecter</span>
+          <span className="login-text-deconnecte">Déconnexion</span>
         </span>
       ) : (
         // Bouton de redirection vers la page de connexion si l'utilisateur n'est pas connecté
@@ -54,7 +54,7 @@ export function Login() {
           <span className="login-icon">
             <CiLogin />
           </span>
-          <span className="login-text">Se connecter</span>
+          <span className="login-text">Connexion</span>
         </Link>
       )}
     </div>

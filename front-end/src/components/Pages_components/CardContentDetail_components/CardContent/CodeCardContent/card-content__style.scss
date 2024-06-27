@@ -18,6 +18,12 @@
         bottom: 10px;
       }
     }
+    span {
+      background-color: #ffffffc4;
+      border-radius: 5px;
+      padding: 5px 10px;
+      color: black;
+    }
     .card-content_image {
       margin-top: 30px;
       animation: content-wrait 1s ease-in-out;
@@ -34,9 +40,8 @@
 
   .card-content_code {
     display: flex;
-    flex-flow: row wrap;
-    margin: 0 55px;
-    justify-content: center;
+    flex-direction: column;
+
     gap: 30px;
     .code {
       margin: 0;

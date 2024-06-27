@@ -137,7 +137,7 @@ function ContainerCode() {
   };
 
   if (isLoading) {
-    return <div>Chargement...</div>;
+    return <span class="loader"></span>;
   }
 
   return (
@@ -151,7 +151,10 @@ function ContainerCode() {
             <FilterBar />
           </div>
           <div className="add-btn">
-            <NewItemButton onClick={handleOpenModal} />
+            <NewItemButton
+              onClick={handleOpenModal}
+              containerType="ContainerCode"
+            />
           </div>
         </div>
       </div>

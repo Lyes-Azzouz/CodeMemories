@@ -14,7 +14,7 @@ function ContainerNotes() {
   const [title, setTitle] = useState(""); // Titre de la nouvelle note
   const [newCardTextAreas, setNewCardTextAreas] = useState(""); // Zones de texte de la nouvelle note
   const [isModalOpen, setIsModalOpen] = useState(false); // État du modal (ouvert ou fermé)
-
+  const [isLoading, setIsLoading] = useState(true);
   // Effet de chargement initial pour récupérer les notes depuis l'API
 
   const fetchCardsNotes = async () => {
@@ -36,6 +36,7 @@ function ContainerNotes() {
     } catch (error) {
       console.error("Error fetching cards:", error);
     }
+    setIsLoading(false);
   };
   useEffect(() => {
     fetchCardsNotes();
@@ -105,13 +106,20 @@ function ContainerNotes() {
     }
   };
 
+  if (isLoading) {
+    return <span class="loader"></span>;
+  }
+
   // Rendu du composant ContainerNotes avec tous les éléments nécessaires
   return (
     <div className="container-notes">
       <div className="top-content-notes">
         <Title /> {/* Affiche le titre de la page */}
         <div className="right-elements">
-          <NewItemButton onClick={handleOpenModal} />{" "}
+          <NewItemButton
+            onClick={handleOpenModal}
+            containerType="ContainerNotes"
+          />
           {/* Bouton pour ajouter une nouvelle note */}
           <FilterBar /> {/* Barre de filtre pour les notes */}
         </div>
