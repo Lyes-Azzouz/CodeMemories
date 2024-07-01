@@ -21,7 +21,7 @@ export function CodeCards({ codecards = [], onDelete, onSelectCard }) {
   const handleOpen = (cardId) => {
     const card = codecards.find((card) => card.id === cardId);
     if (card) {
-      setSelectedCard(card);
+      setSelectedCard({ ...card, type: "code" });
       navigate("/Mes_codes/detail");
     } else {
       console.error("Carte non trouvée:", cardId);

@@ -8,7 +8,7 @@ import "./title.scss";
 export function Title() {
   return (
     <>
-      <h1 className="title">Ma collection</h1>
+      <h1 className="title">Collection</h1>
     </>
   );
 }

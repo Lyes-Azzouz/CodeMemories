@@ -8,9 +8,6 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 export function PanelProfil() {
   return (
     <div className="panel_profil_container">
-      <div className="panel_notification">
-        <IoMdNotificationsOutline />
-      </div>
       <div className="panel_profil">
         <div className="image_profil">
           <CgProfile className="image" />

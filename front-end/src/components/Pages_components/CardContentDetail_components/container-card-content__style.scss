@@ -4,22 +4,23 @@
   overflow-y: auto;
   box-shadow: inset 0 -5em 5em rgba(34, 80, 108, 0.209),
     0.3em 0.3em 1em rgba(34, 80, 108, 0.271);
-  background: rgb(34, 80, 108);
+  background: rgba(17, 39, 53, 0.966);
   border-radius: 10px;
   animation: contain-wrait 0.3s ease-out;
+  padding-bottom: 50px;
 }
 
 // Animations
 
 @keyframes contain-wrait {
   0% {
-    background: rgba(34, 80, 108, 0);
+    background: #fff;
     box-shadow: 5px 5px 10px #b9b9b9, -5px -5px 10px #ffffff;
   }
   100% {
     box-shadow: inset 0 -5em 5em rgba(34, 80, 108, 0.209),
       0.3em 0.3em 1em rgba(34, 80, 108, 0.271);
-    background: rgb(34, 80, 108);
+    background: rgba(17, 39, 53, 0.966);
   }
 }
 

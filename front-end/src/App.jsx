@@ -31,6 +31,7 @@ function App() {
             <Route path="/" element={<MesCodes />} />
             <Route path="/Mes_codes" element={<MesCodes />} />
             <Route path="/Mes_codes/detail" element={<CardContentDetail />} />
+            <Route path="/Mes_notes/detail" element={<CardContentDetail />} />
             <Route path="/Mes_notes" element={<MesNotes />} />
             <Route path="/Ressources" element={<Ressources />} />
             <Route path="/Login" element={<LoginPage />} />
