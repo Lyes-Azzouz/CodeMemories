@@ -25,7 +25,7 @@ export function NotesCards({ notescards = [], onDelete, onSelectCard }) {
     const card = notescards.find((card) => card.id === cardId);
     if (card) {
       console.log("Carte trouvée:", card);
-      setSelectedCard(card);
+      setSelectedCard({ ...card, type: "notes" });
       navigate("/Mes_notes/detail");
     } else {
       console.error("Carte non trouvée:", cardId);

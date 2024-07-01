@@ -5,20 +5,36 @@
 
   cursor: pointer;
 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #fff;
   a {
+    text-decoration: none;
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-decoration: none;
+
     color: #fff;
     .login-icon {
       font-size: 1.7em;
     }
-    .login-text {
-      font-size: 0.8em;
+  }
+  a:active {
+    color: #fddc30;
+  }
+  .login-icon-deconnecte {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.7em;
+    gap: 10px;
+    .login-text-deconnecte {
+      font-size: 0.6em;
     }
   }
-  a:hover {
-    color: #ffd600;
+  .login-icon-deconnecte:active {
+    color: #fddc30;
   }
 }

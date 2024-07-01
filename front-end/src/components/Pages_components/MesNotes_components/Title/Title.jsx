@@ -1,5 +1,5 @@
 import "./title__style.scss";
 
 export function Title() {
-  return <h1>Mes notes</h1>;
+  return <h1>Notes</h1>;
 }
