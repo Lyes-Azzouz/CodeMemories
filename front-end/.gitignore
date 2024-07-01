@@ -24,3 +24,4 @@ config/firebaseConfig.js
 *.njsproj
 *.sln
 *.sw?
+.vercel
